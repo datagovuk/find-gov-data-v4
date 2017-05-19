@@ -137,7 +137,7 @@ router.get('/search-results', function(req, res, next) {
     body: {
       query: {
         query_string: {
-          query: query_string,
+          query: query_string.replace(/\W/g, ''),
           fields: [
                    "summary^2", "title^3", "description^1",
                    "location1^2", "location2^2", "location3^2",
@@ -205,7 +205,7 @@ const get_more_like_this = (dataset, n) => {
       query: {
         more_like_this: {
           fields : ["title^3", "summary^3", "notes", "organisation_name^2"],
-          like : like,
+          like : like.replace(/\W/g, ''),
           min_term_freq : 4,
           max_query_terms : 12
         }
