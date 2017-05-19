@@ -19,7 +19,7 @@
           {{ datafile | calculate_date }}
         </td>
         {% if datafile.format %}
-        <td>{{ datafile.format }} (347kb)</td>
+        <td>{{ datafile.format }} {{ datafile | get_link_size }}</td>
         {% else %}
         <td>N/A</td>
         {% endif %}

@@ -32,7 +32,7 @@
                 {{ datafile | calculate_date(result.update_frequency) }}
               </td>
               {% if datafile.format %}
-              <td>{{ datafile.format | upper }} (347kb)</td>
+              <td>{{ datafile.format | upper }} {{ datafile | get_link_size }}</td>
               {% else %}
               <td>N/A</td>
               {% endif %}
