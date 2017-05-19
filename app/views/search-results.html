@@ -20,7 +20,7 @@
     </div>
   </div>
   <div class="grid-row">
-    <div class="column-two-thirds">
+    <div class="column-full">
       <span class="bold-small">{{ numResults }}</span>
         results found {% if query %}for
       <span class="bold-small">'{{ query }}'{% endif %}</span>
@@ -33,22 +33,9 @@
     </div>
   </div>
 
-<<<<<<< HEAD
-        <label for="location" class="form-label">
-          Enter geographical area
-        </label>
-        <div name="location" id="location" data-default="{{ location }}"></div>
-
-        <input class="button" type="submit" value="Filter">
-        <a href="?q={{ query }}" class="button secondary">Reset all filters</a>
-      </form>
-
-    </div>
-=======
   {% block search_result_filters %}
     {% include "includes/search-results/filters.html" %}
   {% endblock %}
->>>>>>> v3/results_summary_display
 
     <div class="column-two-thirds filters">
       {% set regExp = r/.*register.*/gi %}
