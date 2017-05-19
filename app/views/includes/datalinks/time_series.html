@@ -29,9 +29,6 @@
                 {% endif %}
               </td>
               <td>
-                {{ datafile | calculate_date }}
-              </td>
-              <td>
                 {{ datafile | calculate_date(result.update_frequency) }}
               </td>
               {% if datafile.format %}
