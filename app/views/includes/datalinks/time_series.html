@@ -15,6 +15,7 @@
       <table>
         <tr>
           <th class="title">Link to the data</th>
+          <th>Time period</th>
           <th>Format</th>
           <th>Last updated</th>
           <th>Data preview</th>
@@ -27,8 +28,11 @@
                 {% else %} Data Link
                 {% endif %}
               </td>
+              <td>
+                {{ datafile | calculate_date(result.update_frequency) }}
+              </td>
               {% if datafile.format %}
-              <td>{{ datafile.format }} {{ datafile | get_link_size }} </td>
+              <td>{{ datafile.format | upper }} {{ datafile | get_link_size }}</td>
               {% else %}
               <td>N/A</td>
               {% endif %}
