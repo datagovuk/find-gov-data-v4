@@ -4,7 +4,7 @@
   <table>
     <tr>
       <th class="title">Link to the data</th>
-      <th>Date coverage</th>
+      <th>Time period</th>
       <th>Format</th>
       <th>Last updated</th>
       <th>Data preview</th>
@@ -15,13 +15,11 @@
         <td class="title"><a href="{{ datafile.url }}">
           {{ datafile.name or "Data Link"}}
         </td>
-        <td>
-          {{ datafile | calculate_date }}
-        </td>
+        {{ datafile | calculate_date | safe }}
         {% if datafile.format %}
         <td>{{ datafile.format }} {{ datafile | get_link_size }}</td>
         {% else %}
-        <td>N/A</td>
+        <td class="no-date-added">Unknown</td>
         {% endif %}
         <td class="{% if not datafile.last_updated %}no-date-added{% endif %}">
           {{ datafile | datalink_updated}}
