@@ -15,6 +15,7 @@
       <table>
         <tr>
           <th class="title">Link to the data</th>
+          <th>Time period</th>
           <th>Format</th>
           <th>Last updated</th>
           <th>Data preview</th>
@@ -27,29 +28,24 @@
                 {% else %} Data Link
                 {% endif %}
               </td>
+              {{ datafile | calculate_date(result.update_frequency) | safe }}
               {% if datafile.format %}
-              <td>{{ datafile.format }} (347kb)</td>
+              <td>{{ datafile.format | upper }} {{ datafile | get_link_size }}</td>
               {% else %}
-              <td>N/A</td>
+              <td class="no-date-added">Unknown</td>
               {% endif %}
-              {% if datafile.last_updated %}
-                <td>
-                   {{ datafile.last_updated }}
-                </td>
-              {% else %}
-                <td class="no-date-added">
-                  Not available
-              {% endif %}
-                </td>
-                <td>
-                  {% if datafile.format === 'CSV' %}
-                    <a href="/preview-1/{{ result.name }}/{{ datafile.id }}">Preview</a>
-                  {% elif datafile.format === 'HTML' %}
-                    <a href="{{ datafile.url }}">Go to site</a>
-                  {% else %}
-                    <span class="no-date-added">Not available</span>
-                  {% endif %}
-                </td>
+              <td>
+                  {{ datafile | datalink_updated }}
+              </td>
+              <td>
+                {% if datafile.format === 'CSV' %}
+                  <a href="/preview-1/{{ result.name }}/{{ datafile.id }}">Preview</a>
+                {% elif datafile.format === 'HTML' %}
+                  <a href="{{ datafile.url }}">Go to site</a>
+                {% else %}
+                  <span class="no-date-added">Not available</span>
+                {% endif %}
+              </td>
             </tr>
           {% endfor %}
         </tbody>

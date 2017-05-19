@@ -145,6 +145,11 @@ table th, table td {
   padding-right: 35px;
   padding-left: 0;
   vertical-align: top;
+  font-size: 16px;
+  white-space: nowrap;
+  &:last-child {
+    padding-right: 0;
+  }
 }
 
 table th.title, table td.title {
@@ -663,8 +668,8 @@ section#feedback h2 {
   margin-bottom: 30px;
 }
 
-.unavailable {
-  color: #BFC1C3;
+.unavailable, .no-date-added {
+  color: #6F777B;
 }
 
 .column-two-thirds.tips h2.heading-medium {

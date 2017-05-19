@@ -241,6 +241,8 @@ function renderDataset(template, req, res, next) {
     }
   }
 
+  const backURL = req.header('Referer') || '/';
+
   esClient.search(esQuery, (esError, esResponse) => {
     var result = processEsResponse(esResponse)[0]
     const cmpStrings = (s1, s2) => s1 < s2 ? 1 : (s1 > s2 ? -1 : 0)
@@ -283,7 +285,8 @@ function renderDataset(template, req, res, next) {
           res.render(template, {
             result: result,
             related_datasets: matches,
-            groups: groupByDate(result)
+            groups: groupByDate(result),
+            back: backURL
           })
         })
      }

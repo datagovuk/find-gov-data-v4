@@ -38,6 +38,21 @@ module.exports = function (env) {
 
   ------------------------------------------------------------------ */
 
+  filters.get_link_size = function(datafile) {
+    if (datafile.format == 'HTML') return ''
+
+    if (datafile.size == 0) {
+      return ''
+    }
+
+    kb = Number((datafile.size / 1000).toFixed(1))
+    if ( kb > 1024 ) {
+      kb = Number((kb / 1000).toFixed(1))
+      return ' (' + kb + 'Mb)'
+    }
+    return ' (' + kb + 'Kb)'
+  }
+
   filters.generate_summary = function(dataset) {
     const edit_date = Date.parse(dataset.last_edit_date)
     const new_date = Date.parse("2017-04-01")
@@ -79,6 +94,25 @@ module.exports = function (env) {
     return dataset.notes.substring(0, start_idx)
   }
 
+  filters.datalink_updated = function(datalink) {
+    const months = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ]
+
+    if (datalink.start_date) {
+      const  start = Date.parse(datalink.start_date)
+      const  end = Date.parse(datalink.end_date)
+
+      var diff =  end - start
+      var date = new Date(start + (diff * Math.random()))
+
+      return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
+    }
+
+    return 'Not available'
+  }
+
   filters.sortedByDisplay = function(option) {
     switch (option) {
       case 'recent':
@@ -108,6 +142,18 @@ module.exports = function (env) {
         return `${types[0]}', '${types[1]}' <span class="normal">or</span> '${types[2]}`
       }
     }
+
+  filters.calculate_date = function(resource, updated) {
+    if (updated == 'annually' && resource.start_date != '' ) {
+      return '<td>'+resource.start_date.substring(0, 4)+'</td>'
+    }
+
+    if (updated == 'daily') {
+      return '<td>Continuous</td>'
+    }
+
+    return '<td class="no-date-added">Not applicable</td>'
+  }
 
 
   /* ------------------------------------------------------------------
