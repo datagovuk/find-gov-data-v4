@@ -8,6 +8,25 @@
 
 <main id="content" role="main">
   <div class="grid-row">
+
+    <div class="breadcrumbs">
+    	<ol role="breadcrumbs">
+    	  <li><a href="/">Home</a></li>
+        <!-- Checking if 'search-results' is in the referrer URL
+        to pick up whether or not the user has come from our search results page,
+        or from say google. Need to change when we know our URL -->
+        {% set regExp = r/.*search-results.*/gi %}
+        <li>
+          {% if regExp.test(back) %}
+          <a href="{{back}}">Search Results</a>
+        </li>
+          {% else %}
+          <a href="">{{ result.organisation.title }}</a>
+          {% endif %}
+    	  <li>{{ result.title }}</li>
+    	</ol>
+    </div>
+
     <div class="column-two-thirds">
 
       <h1 class="heading-large">
