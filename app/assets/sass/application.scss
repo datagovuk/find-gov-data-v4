@@ -42,6 +42,12 @@ $path: "/public/images/";
   display: none;
 }
 
+.header-proposition {
+  .content {
+    float: right;
+  }
+}
+
 .heading-large {
   margin-top: 1.5em;
   margin-bottom: 40px;
@@ -302,7 +308,7 @@ main.results-page#content .grid-row.masthead {
 
 .header-logo {
   font-size: 24px;
-  padding-left: 1.5em;
+  padding-left: 15px;
   color: white;
   a {
     color:white;
@@ -316,6 +322,15 @@ main.results-page#content .grid-row.masthead {
 
 #global-header.with-proposition .header-wrapper .header-global {
   width: 50%;
+}
+
+#global-header.with-proposition .header-wrapper .header-proposition {
+  width: 50%;
+}
+
+#global-header .header-proposition #proposition-links li {
+  padding-top: 7px;
+  padding-bottom: 10px;
 }
 
 .search {
