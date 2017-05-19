@@ -38,48 +38,46 @@ module.exports = function (env) {
 
   ------------------------------------------------------------------ */
 
-  filters.generate_summary = function(dataset) {
+  filters.generate_summary = function(dataset, limit) {
     const edit_date = Date.parse(dataset.last_edit_date)
     const new_date = Date.parse("2017-04-01")
-    if (edit_date > new_date) {
-      return dataset.summary
-    } else {
-      return dataset.notes
-    }
-/*
-    const stop_punctuation = ['.', '!', '?', ',', '\n']
-    const start_idx = 160
-    const seek_idx = 30
+    summary = (edit_date > new_date) ? dataset.summary : dataset.notes
 
-    if (dataset.notes.length <= start_idx ||
-        dataset.notes[start_idx] in stop_punctuation ) {
-      return dataset.notes
-    }
+    if (limit) {
 
-    // Is there punctuation up to 30 chars before the pivot point?
-    for( var i = start_idx; i >= start_idx-seek_idx; i--) {
-      if ( stop_punctuation.indexOf(dataset.notes[i]) != -1) {
-        return dataset.notes.substring(0, i)
-      }
-    }
+        const stop_punctuation = ['.', '!', '?', ',', '\n']
+        const start_idx = 160
+        const seek_idx = 30
 
-    // Is there punctuation up to 30 chars after the pivot point
-    for( var i = start_idx; i <= start_idx+seek_idx; i++) {
-      if (stop_punctuation.indexOf(dataset.notes[i]) != -1) {
-        return dataset.notes.substring(0, i)
-      }
-    }
+        if (dataset.notes.length <= start_idx ||
+            dataset.notes[start_idx] in stop_punctuation ) {
+            return dataset.notes
+        }
 
-    // Panic stations, is this description actually just a
-    // single sentence?
-    for( var i = start_idx; i >= 0; i--) {
-      if ( stop_punctuation.indexOf(dataset.notes[i]) != -1) {
-        return dataset.notes.substring(0, i)
-      }
-    }
+        // Is there punctuation up to 30 chars before the pivot point?
+        for( var i = start_idx; i >= start_idx-seek_idx; i--) {
+            if ( stop_punctuation.indexOf(dataset.notes[i]) != -1) {
+                return dataset.notes.substring(0, i) + '…'
+            }
+        }
 
-    return dataset.notes.substring(0, start_idx)
-*/
+        // Is there punctuation up to 30 chars after the pivot point
+        for( var i = start_idx; i <= start_idx+seek_idx; i++) {
+            if (stop_punctuation.indexOf(dataset.notes[i]) != -1) {
+                return dataset.notes.substring(0, i) + '…'
+            }
+        }
+
+        // Panic stations, is this description actually just a
+        // single sentence?
+        for( var i = start_idx; i >= 0; i--) {
+            if ( stop_punctuation.indexOf(dataset.notes[i]) != -1) {
+                return dataset.notes.substring(0, i) + '…'
+            }
+        }
+        summary = summary.substring(0, start_idx) + '…'
+    }
+    return summary
   }
 
   filters.sortedByDisplay = function(option) {

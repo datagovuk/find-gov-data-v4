@@ -34,8 +34,7 @@ $(document).ready(function () {
     })
   }
 
-
-  $.each($('.summary'), (i,el) => (new FoldableText($(el), 250)).init());
+  $.each($('.summary'), (i,el) => new FoldableText($(el), 250));
 
   new limitDatasets('.show-toggle')
     .init()
@@ -109,9 +108,13 @@ var FoldableText = function (element, maxChars) {
   this.originalText = element.text()
   this.shortText = element.text().slice(0, maxChars)
   this.showingFull = false
-  return this
+  this.anchor
+    .on('click', '.fold', event => {
+      this.showingFull = !this.showingFull;
+      this.render();
+    });
+  this.render()
 }
-
 
 FoldableText.prototype.render = function() {
   const html =
@@ -120,19 +123,13 @@ FoldableText.prototype.render = function() {
       : (
           ( this.showingFull
             ? ('<div><div>' + this.originalText + '</div><div class="fold">Hide full summary</div></div>')
-            : ('<div><div>' + this.shortText + '</div><div class="fold">View full summary</div></div>')
+            : ('<div><div>' + this.shortText + '…</div><div class="fold">View full summary</div></div>')
           )
         )
   this.anchor.html(html)
 }
 
-FoldableText.prototype.init = function() {
-  $(this.anchor).on('click', '.fold', event => {
-      this.showingFull = !this.showingFull;
-      this.render();
-  });
-  this.render()
-}
+// =========================================
 
 // Limit number of results for non-time series data
 

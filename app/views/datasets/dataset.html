@@ -30,9 +30,11 @@
         </dl>
 
         <h3 class="heading-small">
-            Summary
+          Summary
         </h3>
-        <p class="summary"> {{ result | generate_summary }} {{ result | generate_summary }} {{ result | generate_summary }} {{ result | generate_summary }} {{ result | generate_summary }} </p>
+        <div class="summary" id="summary">
+          {{ result | generate_summary(false) }}
+        </div>
       </div>
       <section class="data-links">
     </div>

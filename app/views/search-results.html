@@ -59,7 +59,7 @@
                 <dd class="unavailable">Not available</dd>
               {% endif %}
             </dl>
-          <p>{{ dataset | generate_summary  }}</p>
+          <p>{{ dataset | generate_summary(true)  }}</p>
         </div>
       </div>
       {% endfor %}

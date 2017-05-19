@@ -44,6 +44,9 @@ const processEsResponse = results =>
         .join(',')
       newResult.last_updated = day + ' ' + month + ' ' + year
       newResult.next_updated = UpdateDate(newResult.update_frequency, day, newResult.last_edit_date.substr(5,2), year )
+      newResult.summary = sanitize(newResult.summary)
+      newResult.notes = sanitize(newResult.notes)
+      newResult.description = sanitize(newResult.description)
       return newResult
     })
 
