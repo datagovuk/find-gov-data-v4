@@ -24,7 +24,7 @@
         <td>N/A</td>
         {% endif %}
         <td class="{% if not datafile.last_updated %}no-date-added{% endif %}">
-          {{ datafile.last_updated or "Not available"}}
+          {{ datafile | datalink_updated}}
         </td>
         <td>
           {% if datafile.format === 'CSV' %}
