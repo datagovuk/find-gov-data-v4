@@ -42,13 +42,10 @@ module.exports = function (env) {
     switch (option) {
       case 'recent':
         return 'Most recent'
-        break;
       case 'viewed':
         return 'Most viewed'
-        break;
       case 'best':
         return 'Best match'
-        break;
     }
   }
 
