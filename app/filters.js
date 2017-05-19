@@ -105,7 +105,7 @@ module.exports = function (env) {
       } else if (types.length == 2) {
         return `${types[0]}' <span class="normal">or</span> '${types[1]}`
       } else {
-        return `${types[0]}', '${types[1]}' <span class="normal">or</span>'${types[2]}`
+        return `${types[0]}', '${types[1]}' <span class="normal">or</span> '${types[2]}`
       }
     }
 
