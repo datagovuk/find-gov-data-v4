@@ -43,8 +43,10 @@ module.exports = function (env) {
     const new_date = Date.parse("2017-04-01")
     if (edit_date > new_date) {
       return dataset.summary
+    } else {
+      return dataset.notes
     }
-
+/*
     const stop_punctuation = ['.', '!', '?', ',', '\n']
     const start_idx = 160
     const seek_idx = 30
@@ -77,6 +79,7 @@ module.exports = function (env) {
     }
 
     return dataset.notes.substring(0, start_idx)
+*/
   }
 
   filters.sortedByDisplay = function(option) {
