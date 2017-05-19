@@ -109,6 +109,18 @@ module.exports = function (env) {
       }
     }
 
+  filters.calculate_date = function(resource, updated) {
+    if (updated == 'annually' && resource.start_date != '' ) {
+      return resource.start_date.substring(0, 4)
+    }
+
+    if (updated == 'daily') {
+      return 'Continuous'
+    }
+
+    return 'Not applicable'
+  }
+
 
   /* ------------------------------------------------------------------
     keep the following line to return your filters to the app

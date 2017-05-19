@@ -139,6 +139,11 @@ table th, table td {
   padding-right: 35px;
   padding-left: 0;
   vertical-align: top;
+  font-size: 16px;
+  white-space: nowrap;
+  &:last-child {
+    padding-right: 0;
+  }
 }
 
 table th.title, table td.title {
