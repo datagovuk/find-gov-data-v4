@@ -32,7 +32,7 @@
         <h3 class="heading-small">
             Summary
         </h3>
-        <p class="summary" style="max-height: 250px; overflow: hidden"> {{ result.notes }} </p>
+        <p class="summary" style="max-height: 250px; overflow: hidden"> {{ result | generate_summary }} </p>
       </div>
       <section class="data-links">
     </div>
@@ -88,6 +88,11 @@
         <h2 class="heading-medium">
           Additional information
         </h2>
+
+        <p class="additional-information">
+          {{ result.notes }}
+        </p>
+
         <p class="additional-information"> This dataset is available under the <a href="">Open Government Licence</a>. All the data variables are coded rather than
         containing textual strings. The look up tables are available under "Additional resources" section towards the border-bottom
         of the table for the 2015 data.
