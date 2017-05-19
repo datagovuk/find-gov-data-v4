@@ -94,6 +94,25 @@ module.exports = function (env) {
     return dataset.notes.substring(0, start_idx)
   }
 
+  filters.datalink_updated = function(datalink) {
+    const months = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ]
+
+    if (datalink.start_date) {
+      const  start = Date.parse(datalink.start_date)
+      const  end = Date.parse(datalink.end_date)
+
+      var diff =  end - start
+      var date = new Date(start + (diff * Math.random()))
+
+      return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
+    }
+
+    return 'Not available'
+  }
+
   filters.sortedByDisplay = function(option) {
     switch (option) {
       case 'recent':
@@ -126,14 +145,14 @@ module.exports = function (env) {
 
   filters.calculate_date = function(resource, updated) {
     if (updated == 'annually' && resource.start_date != '' ) {
-      return resource.start_date.substring(0, 4)
+      return '<td>'+resource.start_date.substring(0, 4)+'</td>'
     }
 
     if (updated == 'daily') {
-      return 'Continuous'
+      return '<td>Continuous</td>'
     }
 
-    return 'Not applicable'
+    return '<td class="no-date-added">Not applicable</td>'
   }
 
 
