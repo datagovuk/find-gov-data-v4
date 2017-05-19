@@ -7,6 +7,7 @@ var http = require('http');
 var parse = require('csv-parse');
 var sanitizeHtml = require('sanitize-html');
 
+
 const esClient = new elasticsearch.Client({
   host: process.env.ES_HOSTS,
 //  log: 'trace'
