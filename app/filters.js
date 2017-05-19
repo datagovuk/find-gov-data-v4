@@ -145,14 +145,14 @@ module.exports = function (env) {
 
   filters.calculate_date = function(resource, updated) {
     if (updated == 'annually' && resource.start_date != '' ) {
-      return resource.start_date.substring(0, 4)
+      return '<td>'+resource.start_date.substring(0, 4)+'</td>'
     }
 
     if (updated == 'daily') {
-      return 'Continuous'
+      return '<td>Continuous</td>'
     }
 
-    return 'Not applicable'
+    return '<td class="no-date-added">Not applicable</td>'
   }
 
 
