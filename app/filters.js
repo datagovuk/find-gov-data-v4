@@ -38,6 +38,21 @@ module.exports = function (env) {
 
   ------------------------------------------------------------------ */
 
+  filters.get_link_size = function(datafile) {
+    if (datafile.format == 'HTML') return ''
+
+    if (datafile.size == 0) {
+      return ''
+    }
+
+    kb = Number((datafile.size / 1000).toFixed(1))
+    if ( kb > 1024 ) {
+      kb = Number((kb / 1000).toFixed(1))
+      return ' (' + kb + 'Mb)'
+    }
+    return ' (' + kb + 'Kb)'
+  }
+
   filters.generate_summary = function(dataset) {
     const edit_date = Date.parse(dataset.last_edit_date)
     const new_date = Date.parse("2017-04-01")
