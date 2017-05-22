@@ -108,7 +108,7 @@ router.get('/search-results', function(req, res, next) {
 
   // Copy the query because we don't want to provide a potentially modified
   // version back to the template.
-  var query_string = query
+  var query_string = query || ""
   var sortBy = req.query['sortby']
   var limit = 10
   var offset = (page * limit) - limit
@@ -117,6 +117,11 @@ router.get('/search-results', function(req, res, next) {
     query_string += " " + location
     query_string = query_string.trim()
   }
+
+  if (query_string) {
+    query_string = query_string.replace(/\W/g, '')
+  }
+
 
   // If there is no query string, we will default to showing the most recent
   // datasets as we can't have relevance when there is nothing to check
@@ -137,7 +142,7 @@ router.get('/search-results', function(req, res, next) {
     body: {
       query: {
         query_string: {
-          query: query_string.replace(/\W/g, ''),
+          query: query_string,
           fields: [
                    "summary^2", "title^3", "description^1",
                    "location1^2", "location2^2", "location3^2",
