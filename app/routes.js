@@ -118,11 +118,6 @@ router.get('/search-results', function(req, res, next) {
     query_string = query_string.trim()
   }
 
-  if (query_string) {
-    query_string = query_string.replace(/\W/g, '')
-  }
-
-
   // If there is no query string, we will default to showing the most recent
   // datasets as we can't have relevance when there is nothing to check
   // relevance against. At the same time, we want to match everything if the
@@ -210,7 +205,7 @@ const get_more_like_this = (dataset, n) => {
       query: {
         more_like_this: {
           fields : ["title^3", "summary^3", "notes", "organisation_name^2"],
-          like : like.replace(/\W/g, ''),
+          like : like,
           min_term_freq : 4,
           max_query_terms : 12
         }
