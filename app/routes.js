@@ -113,6 +113,8 @@ router.get('/search-results', function(req, res, next) {
   var limit = 10
   var offset = (page * limit) - limit
 
+  query_string = query_string.replace(/\W/g, ' ')
+
   if (location) {
     query_string += " " + location
     query_string = query_string.trim()
