@@ -304,7 +304,7 @@ router.get('/datasets5/:name', function(req, res, next) { renderDataset('dataset
 /* ========== Preview page ========== */
 
 // On successfully fetching some data to preview, will render if to the template
-const preview_success = (req, res, dataset_title, datalink, output) => {
+const preview_success = (req, res, dataset_title, datalink, output, lines) => {
   res.render(
     'preview-1',
     {
@@ -313,9 +313,11 @@ const preview_success = (req, res, dataset_title, datalink, output) => {
       filename: datalink.name,
       url: datalink.url,
       previewData: output,
-      previewHeadings: Object.keys(output[0])
+      previewHeadings: Object.keys(output[0]),
+      lineCount: lines
     }
   )
+
 }
 
 // We might fail to fetch some data to preview, for a plethora of reasons
@@ -372,8 +374,9 @@ router.get('/preview-1/:datasetname/:datafileid', function (req, res) {
             var str="";
             response.on('data', data => {
               str += data;
-              // If we've got more than 32000 bytes
-              if (str.length>32000) {
+              var lines = Math.floor(response.headers['content-length']/263)
+              // If we've got more than 10000 bytes
+              if (str.length>10000) {
                 str = str.split('\n').slice(0,6).join('\n');
                 parse(str, { to: 5, columns: true }, (err, output) => {
                   if (err) {
@@ -381,9 +384,10 @@ router.get('/preview-1/:datasetname/:datafileid', function (req, res) {
                       "We cannot show this preview as there is an error in the CSV data"
                     )
                   } else {
-                    preview_success(req, res, dataset_title, datalink, output)
+                    preview_success(req, res, dataset_title, datalink, output, lines)
                   }
                 })
+
                 csvRequest.abort();
               }
             })
