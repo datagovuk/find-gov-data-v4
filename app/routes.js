@@ -6,7 +6,7 @@ var request = require('request');
 var http = require('http');
 var parse = require('csv-parse');
 var sanitizeHtml = require('sanitize-html');
-
+// ignore
 
 const esClient = new elasticsearch.Client({
   host: process.env.ES_HOSTS,
@@ -112,6 +112,8 @@ router.get('/search-results', function(req, res, next) {
   var sortBy = req.query['sortby']
   var limit = 10
   var offset = (page * limit) - limit
+
+  query_string = query_string.replace(/\W/g, ' ')
 
   if (location) {
     query_string += " " + location
