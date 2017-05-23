@@ -49,7 +49,7 @@ var ShowHide = function() {
   this.controlSelector = '.showHide-control'
   this.contentSelector = '.showHide-content'
   this.openSelector = '.showHide-open-all'
-  this.expandSelector = '.expand'
+  this.expandSelector = '.expand button'
   this.allOpen = false;
 }
 
