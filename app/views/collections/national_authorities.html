@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block page_title %}
+    Collections - National Authorities
+{% endblock %}
+
+{% block content %}
+<main id="content" role="main">
+
+  <div class="grid-row">
+    <div class="column-full">
+      <h1 class="heading-large">
+        <span class="heading-secondary">Collection</span>
+        National Authorities
+      </h1>
+
+      <p class="lede">
+        From public transport, healthcare, or schools, to household population data; we've got the details
+      </p>
+    </div>
+  </div>
+
+  <div class="grid-row">
+    <div class="column-one-half">
+      <h2 class="heading-medium">
+        Public Transport
+      </h2>
+      <p>Bulletin presenting latest annual data for road-based public transport in Great Britain. Contains information for local buses, non-local buses and coaches.</p>
+      <!-- this links to a dataset preview page -->
+      <a href="/dataset/public_transport_statistics_bulletin">View data</a>
+    </div>
+
+    <div class="column-one-half">
+      <h2 class="heading-medium">
+        Healthcare
+      </h2>
+      <p>The latest estimates of change in the volume of Healthcare output, and impact of quality adjustment</p>
+      <!-- this links to a dataset preview page -->
+      <a href="/dataset/public_sector_productivity_estimates-healthcare">View data</a>
+    </div>
+  </div>
+
+    <div class="grid-row">
+      <div class="column-one-half">
+        <h2 class="heading-medium">
+          Schools
+        </h2>
+        <p>Achievement and Attainment Tables for National Curriculum Assessments at Key Stage 2</p>
+        <!-- this links to a dataset preview page -->
+        <a href="/dataset/achievement_and_attainment_tables_for_national_curriculum_assessments_at_key_stage_2">View data</a>
+      </div>
+
+      <div class="column-one-half">
+        <h2 class="heading-medium">
+          Population
+        </h2>
+        <p>Population density: Persons per hectare Source: Census 2001</p>
+        <a href="/dataset/population_density">View data</a>
+      </div>
+    </div>
+    
+</main>
+
+{% endblock %}
