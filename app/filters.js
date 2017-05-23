@@ -155,6 +155,13 @@ module.exports = function (env) {
     return '<td class="no-date-added">Not applicable</td>'
   }
 
+  filters.display_line_count = function( lineCount ) {
+    if ( lineCount == -1 ) {
+      return  ""
+    } else {
+      return  `You're previewing 5 rows out of approximately ${lineCount} in this file`
+    }
+  }
 
   /* ------------------------------------------------------------------
     keep the following line to return your filters to the app
