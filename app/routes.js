@@ -348,9 +348,9 @@ const preview_fail = (req, res, dataset_title, datalink, error) => {
   )
 }
 
-const get_line_count = (contentLength, fiveLineString) => {
+const getLineCount = (contentLength, fiveLineString) => {
    if (contentLength == -1) {
-     return "contentLength"
+     return contentLength
    } else {
      oneLine = (fiveLineString.length) / 5
      return Math.floor(contentLength / oneLine)
@@ -385,11 +385,12 @@ router.get('/preview-1/:datasetname/:datafileid', function (req, res) {
             var str="";
             response.on('data', data => {
               str += data;
-              var contentLength = response.headers['content-length'] || -1
+              var contentLength = Number(response.headers['content-length']) || -1
               // If we've got more than 10000 bytes
-              if (str.length>10000) {
+
+              if (str.length > Math.min(contentLength, 1000)) {
                 str = str.split('\n').slice(0,6).join('\n');
-                totalLines = get_line_count(contentLength, str)
+                totalLines = getLineCount(contentLength, str)
                 parse(str, { to: 5, columns: true }, (err, output) => {
                   if (err) {
                     preview_fail(req, res, dataset_title, datalink,
@@ -400,6 +401,7 @@ router.get('/preview-1/:datasetname/:datafileid', function (req, res) {
                   }
                 })
                 csvRequest.abort();
+
               }
             })
           }
