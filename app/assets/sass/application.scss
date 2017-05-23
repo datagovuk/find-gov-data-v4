@@ -38,6 +38,15 @@ $path: "/public/images/";
   background: none;
 }
 
+// Fix header link focus for accessibility
+#global-header a:focus {
+  color: #fff !important;
+  text-decoration: underline !important;
+
+  // Added !important as a hack to force a elements in #proposition links
+  // to use the correct behaviour
+}
+
 #global-header-bar {
   display: none;
 }
