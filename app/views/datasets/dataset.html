@@ -48,9 +48,9 @@
           <dd class="unavailable">Not applicable</dd>
         </dl>
 
-        <h3 class="heading-small">
+        <h2 class="heading-small">
             Summary
-        </h3>
+        </h2>
         <p class="summary" style="max-height: 250px; overflow: hidden"> {{ result | generate_summary }} </p>
       </div>
       <section class="data-links">
@@ -58,14 +58,14 @@
 
     <div class="column-one-third related-datasets">
       {% if related_datasets | length %}
-        <h3 class="heading-small">More Transport Datasets</h3>
+        <h2 class="heading-small">More Transport Datasets</h2>
         <ul>
           {% for dataset in related_datasets %}
             <li><a href="/dataset/{{ dataset.name }}">{{ dataset.title | truncate(65) }}</a></li>
           {% endfor %}
         </ul>
       {% endif %}
-      <h3 class="heading-small related">Search UK Government data</h3>
+      <h2 class="heading-small related">Search UK Government data</h2>
       {% block top_search %}
         <form id="search-form" action="/search-results" method="GET" class="top-search">
           <fieldset>
