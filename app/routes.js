@@ -307,7 +307,7 @@ router.get('/dataset5/:name', function(req, res, next) { renderDataset('datasets
 /* ========== Preview page ========== */
 
 // On successfully fetching some data to preview, will render if to the template
-const preview_success = (req, res, dataset_title, datalink, output) => {
+const preview_success = (req, res, dataset_title, datalink, output, totalLines) => {
   res.render(
     'preview-1',
     {
@@ -316,7 +316,8 @@ const preview_success = (req, res, dataset_title, datalink, output) => {
       filename: datalink.name,
       url: datalink.url,
       previewData: output,
-      previewHeadings: Object.keys(output[0])
+      previewHeadings: Object.keys(output[0]),
+      lineCount: totalLines
     }
   )
 }
@@ -347,6 +348,15 @@ const preview_fail = (req, res, dataset_title, datalink, error) => {
   )
 }
 
+const getLineCount = (contentLength, fiveLineString) => {
+   if (contentLength == -1) {
+     return contentLength
+   } else {
+     oneLine = (fiveLineString.length) / 5
+     return Math.floor(contentLength / oneLine)
+   }
+}
+
 router.get('/preview-1/:datasetname/:datafileid', function (req, res) {
   // retrieve details for the datafile (URL, name)
   const esQuery = {
@@ -375,19 +385,23 @@ router.get('/preview-1/:datasetname/:datafileid', function (req, res) {
             var str="";
             response.on('data', data => {
               str += data;
-              // If we've got more than 32000 bytes
-              if (str.length>32000) {
+              var contentLength = Number(response.headers['content-length']) || -1
+              // If we've got more than 10000 bytes
+
+              if (str.length > Math.min(contentLength, 1000)) {
                 str = str.split('\n').slice(0,6).join('\n');
+                totalLines = getLineCount(contentLength, str)
                 parse(str, { to: 5, columns: true }, (err, output) => {
                   if (err) {
                     preview_fail(req, res, dataset_title, datalink,
                       "We cannot show this preview as there is an error in the CSV data"
                     )
                   } else {
-                    preview_success(req, res, dataset_title, datalink, output)
+                    preview_success(req, res, dataset_title, datalink, output, totalLines)
                   }
                 })
                 csvRequest.abort();
+
               }
             })
           }
