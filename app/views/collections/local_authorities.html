@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block page_title %}
+    Collections - Local Authorities
+{% endblock %}
+
+{% block content %}
+<main id="content" role="main">
+
+  <div class="grid-row">
+    <div class="column-full">
+      <h1 class="heading-large">
+        <span class="heading-secondary">Collection</span>
+        Local Authorities
+      </h1>
+
+      <p class="lede">
+        Discover data about local councils, spending figures, land planning, or reserves, plus much more
+      </p>
+    </div>
+  </div>
+
+  <div class="grid-row">
+    <div class="column-one-half">
+      <h2 class="heading-medium">
+        Local councils
+      </h2>
+      <p>List of Town and Parish Councils in England</p>
+      <!-- this links to a dataset preview page -->
+      <a href="/dataset/town_parish_councils_in_england">View data</a>
+    </div>
+
+    <div class="column-one-half">
+      <h2 class="heading-medium">
+        Spending figures
+      </h2>
+      <p>Staffordshire County Council expenditure over £500</p>
+      <a href="/dataset/spend-data-staffordshire-county-council-april-2016">View data</a>
+    </div>
+  </div>
+
+    <div class="grid-row">
+      <div class="column-one-half">
+        <h2 class="heading-medium">
+          Land planning
+        </h2>
+        <p>Planning application data for Wolverhampton City Council, published as part of the incentive scheme.</p>
+        <!-- this links to a dataset preview page -->
+        <a href="/dataset/planningapplicationswolverhampton">View data</a>
+      </div>
+
+      <div class="column-one-half">
+        <h2 class="heading-medium">
+          Reserves
+        </h2>
+        <p>National nature reserves (England) </p>
+        <a href="/dataset/national-nature-reserves-england1">View data</a>
+      </div>
+    </div>
+
+</main>
+
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block page_title %}
+    Collections - Organograms
+{% endblock %}
+
+{% block content %}
+<main id="content" role="main">
+
+  <div class="grid-row">
+    <div class="column-full">
+      <h1 class="heading-large">
+        <span class="heading-secondary">Collection</span>
+        Organograms
+      </h1>
+
+      <p class="lede">
+        Organograms are organisational charts showing the organisation structure of government. They include senior roles and salaries.  Organogram data is released by all central government departments and their agencies since 2010.
+      </p>
+    </div>
+  </div>
+
+  <div class="grid-row">
+    <div class="column-one-half">
+      <h2 class="heading-medium">
+        Organogram for Cabinet Office
+      </h2>
+      <p>Organogram (organisation chart) showing all staff roles. Names and salaries are also listed for the Senior Civil Servants.</p>
+      <!-- this links to a dataset preview page -->
+      <a href="/dataset/organogram-cabinet-office">View data</a>
+    </div>
+
+    <div class="column-one-half">
+      <h2 class="heading-medium">
+        Organogram for NHS Institute for Innovation and Improvement
+      </h2>
+      <p>A list of executive director and director posts at the NHS Institute including name, title, contact details, their line manager</p>
+      <!-- this links to a dataset preview page -->
+      <a href="/dataset/staff-organograms-and-pay-nhs-institute-for-innovation-and-improvement">View data</a>
+    </div>
+
+      <div class="column-one-half">
+        <h2 class="heading-medium">
+          Organogram for Government Offices
+        </h2>
+        <p>A list of most Senior Civil Service posts in the Government Office Network. The Government Office Network has now closed.</p>
+        <!-- this links to a dataset preview page -->
+        <a href="/dataset/staff-organograms-and-pay-government-offices">View data</a>
+      </div>
+
+      <div class="column-one-half">
+        <h2 class="heading-medium">
+          Organogram for National School of Government
+        </h2>
+        <p>A list of most Senior Civil Service posts in the National School of Government including title, contact details, their line manager, and where disclosed</p>
+        <a href="/dataset/staff-organograms-and-pay-national-school-of-government">View data</a>
+      </div>
+    </div>
+
+</main>
+
+{% endblock %}
