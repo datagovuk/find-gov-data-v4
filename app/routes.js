@@ -113,6 +113,9 @@ router.get('/search-results', function(req, res, next) {
   var limit = 10
   var offset = (page * limit) - limit
 
+  // Remove punctuation from the query string
+  query_string = query_string.replace(/\W/g, ' ')
+
   if (location) {
     query_string += " " + location
     query_string = query_string.trim()
@@ -123,7 +126,7 @@ router.get('/search-results', function(req, res, next) {
   // relevance against. At the same time, we want to match everything if the
   // user has provided no terms so we will search for *
   if (query_string == ""){
-    sortBy = 'recent'
+    if (!sortBy) sortBy = 'recent'
     query_string = "*"
   }
 
@@ -293,11 +296,11 @@ function renderDataset(template, req, res, next) {
   })
 }
 
-router.get('/datasets/:name', function(req, res, next) { renderDataset('datasets/dataset', req, res, next); })
-router.get('/datasets2/:name', function(req, res, next) { renderDataset('datasets/dataset2', req, res, next); })
-router.get('/datasets3/:name', function(req, res, next) { renderDataset('datasets/dataset3', req, res, next); })
-router.get('/datasets4/:name', function(req, res, next) { renderDataset('datasets/dataset4', req, res, next); })
-router.get('/datasets5/:name', function(req, res, next) { renderDataset('datasets/dataset5', req, res, next); })
+router.get('/dataset/:name', function(req, res, next) { renderDataset('datasets/dataset', req, res, next); })
+router.get('/dataset2/:name', function(req, res, next) { renderDataset('datasets/dataset2', req, res, next); })
+router.get('/dataset3/:name', function(req, res, next) { renderDataset('datasets/dataset3', req, res, next); })
+router.get('/dataset4/:name', function(req, res, next) { renderDataset('datasets/dataset4', req, res, next); })
+router.get('/dataset5/:name', function(req, res, next) { renderDataset('datasets/dataset5', req, res, next); })
 
 
 
