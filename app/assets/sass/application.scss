@@ -440,10 +440,6 @@ ul.pagination {
   hr {
     margin-bottom: 0;
   }
-  span.expand {
-    font-size: 2em;
-    font-weight: bold;
-  }
   .preview {
     padding-right: 1.4em;
   }
@@ -709,4 +705,16 @@ p.table-heading {
   color: $link-colour;
   text-decoration: underline;
   cursor:pointer
+}
+
+button.button.secondary {
+  background: none;
+  color: $govuk-blue;
+  text-decoration: none;
+  box-shadow: none;
+  font-weight: bold;
+  padding: .8em 0 0 0;
+  &.expand {
+    font-size: 1.5em;
+  }
 }
