@@ -123,7 +123,7 @@ router.get('/search-results', function(req, res, next) {
   // relevance against. At the same time, we want to match everything if the
   // user has provided no terms so we will search for *
   if (query_string == ""){
-    sortBy = 'recent'
+    if (!sortBy) sortBy = 'recent'
     query_string = "*"
   }
 
