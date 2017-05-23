@@ -29,6 +29,7 @@ $(document).ready(function () {
     accessibleAutocomplete({
       element: locationInput,
       id: 'my-autocomplete',
+      name: locationInput.getAttribute('name'),
       source: suggest,
       defaultValue: locationInput.getAttribute('data-default')
     })
