@@ -96,7 +96,7 @@ function sanitize(text) {
 
 router.get('/search-results', function(req, res, next) {
   const query = req.query.q
-  const location = req.query['input-autocomplete']
+  const location = req.query['location']
   const page = req.query.page || 1
   orgTypes = req.query['org-type'] || ''
 
