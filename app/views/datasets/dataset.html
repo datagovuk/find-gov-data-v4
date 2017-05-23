@@ -61,7 +61,7 @@
         <h3 class="heading-small">More Transport Datasets</h3>
         <ul>
           {% for dataset in related_datasets %}
-            <li><a href="/datasets/{{ dataset.name }}">{{ dataset.title | truncate(65) }}</a></li>
+            <li><a href="/dataset/{{ dataset.name }}">{{ dataset.title | truncate(65) }}</a></li>
           {% endfor %}
         </ul>
       {% endif %}
