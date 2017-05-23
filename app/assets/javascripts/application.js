@@ -34,9 +34,7 @@ $(document).ready(function () {
     })
   }
 
-
-  new FoldableText('.summary', 200)
-    .init()
+  $.each($('.summary'), (i,el) => new FoldableText($(el), 250));
 
   new limitDatasets('.show-toggle')
     .init()
@@ -104,45 +102,34 @@ function do_switch(previewer, appender, tab){
 
 // ==== Foldable text ======================
 
-var FoldableText = function (selector, size) {
-  this.selector = selector
-  this.els = $(this.selector)
-  this.minSize = size
-  return this
+var FoldableText = function (element, maxChars) {
+  this.anchor = element
+  this.maxChars = maxChars
+  this.originalText = element.text()
+  this.shortText = element.text().slice(0, maxChars)
+  this.showingFull = false
+  this.anchor
+    .on('click', '.fold', event => {
+      this.showingFull = !this.showingFull;
+      this.render();
+    });
+  this.render()
 }
 
-FoldableText.prototype.toggle = function(event) {
-  const $target = $(event.target)
-  if ($target.data('folded') === 'folded') {
-    $target.text('Hide full summary')
-    $target.prev(this.selector).height($target.data('height'))
-    $target.data('folded', 'unfolded')
-  } else {
-    $target.text('View full summary')
-    $target.prev(this.selector).height(this.minSize)
-    $target.data('folded', 'folded')
-  }
+FoldableText.prototype.render = function() {
+  const html =
+    this.originalText.length < this.maxChars
+      ? ('<div>' + this.originalText + '</div>')
+      : (
+          ( this.showingFull
+            ? ('<div><div>' + this.originalText + '</div><div class="fold">Hide full summary</div></div>')
+            : ('<div><div>' + this.shortText + '…</div><div class="fold">View full summary</div></div>')
+          )
+        )
+  this.anchor.html(html)
 }
 
-FoldableText.prototype.init = function() {
-  $.each(this.els, (idx, el) => {
-    const $el = $(el)
-    $el.css('max-height','100000px')
-    const originalHeight = $el.height()
-    if (originalHeight > this.minSize) {
-      $el
-        .height(this.minSize)
-        .css('overflow', 'hidden')
-        .css('margin-bottom', 0)
-        .wrap('<p class="fold-outer"></p>')
-
-      $el.parent('p.fold-outer')
-        .append('<div class="fold" data-folded="folded" data-height="'+originalHeight+'">View full summary</div>')
-
-      $el.next('.fold').on('click', this.toggle.bind(this));
-    }
-  })
-}
+// =========================================
 
 // Limit number of results for non-time series data
 

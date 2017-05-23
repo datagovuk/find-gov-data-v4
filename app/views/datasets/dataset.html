@@ -49,9 +49,11 @@
         </dl>
 
         <h3 class="heading-small">
-            Summary
+          Summary
         </h3>
-        <p class="summary" style="max-height: 250px; overflow: hidden"> {{ result | generate_summary }} </p>
+        <div class="summary" id="summary">
+          {{ result | generate_summary }}
+        </div>
       </div>
       <section class="data-links">
     </div>
