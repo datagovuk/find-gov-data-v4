@@ -90,7 +90,10 @@ function UpdateDate(frequency, day, month, year){
 
 
 function sanitize(text) {
-  return sanitizeHtml(text, { allowedTags: [] })
+  // This should work according to the documentation, but doesn't
+  //  return sanitizeHtml(text, { allowedTags: [], parser: {decodeEntities: false} })
+  return sanitizeHtml(text, { allowedTags: [] }).replace('&amp;', '&');
+
 }
 
 
