@@ -8,6 +8,7 @@ var parse = require('csv-parse');
 var sanitizeHtml = require('sanitize-html');
 
 
+
 const esClient = new elasticsearch.Client({
   host: process.env.ES_HOSTS,
 //  log: 'trace'
@@ -44,72 +45,85 @@ const processEsResponse = results =>
         .filter(loc => loc)
         .join(',')
       newResult.last_updated = day + ' ' + month + ' ' + year
-      newResult.next_updated = new updateDate(frequency, day, newResult.last_edit_date.substr(5,2), year).calculate()
+      newResult.next_updated = new UpdateDate(frequency, day, newResult.last_edit_date.substr(5,2), year).calculate()
       return newResult
     })
 
 
 // Calculates the expected update date, based on frequency selected and the last time the dataset
-// was updated. Doesn't yet handle weekly updates.
+// was updated.
 
-var updateDate = function (frequency, day, month, year) {
+var UpdateDate = function (frequency, day, month, year) {
   this.yearWords = ['annual','annually', 'yearly', 'year']
-  this.quarterlyWords = ['quarterly', 'quarter', 'four months', '4 months']
+  this.quarterlyWords = ['quarterly', 'quarter', 'four months', '4 months', 'quarterly calendar']
   this.monthlyWords = ['monthly', 'month']
+  this.dailyWords = ['daily', 'per day', 'day']
+  this.lastOfMonth = {'01':'31', '02':'28', '03':'31', '04':'30', '05':'31', '06':'30', '07':'31', '08':'31', '09':'30', '10':'31', '11':'30', '12':'31'}
 
   this.int_year = Number(year)
   this.int_month = Number(month)
+  this.int_day = Number(day)
   this.month = month
   this.day = day
   this.year = year
-  this.frequency = frequency
+  this.frequency = frequency.toLowerCase()
   this.updatedMonth
   this.updatedYear
-  this.nextUpdated = this.day + ' ' + this.updatedMonth + ' ' + this.updatedYear
+
+  this.expectedUpdate = {'day': this.day, 'month': monthNames[this.month], 'year': this.year }
+
   return this
 }
 
-updateDate.prototype.monthUpdates = function (int_month, frequency) {
+UpdateDate.prototype.monthUpdates = function (int_month, frequency) {
+  var updated = {}
     if (int_month + frequency > 12) {
-      this.updatedYear = this.int_year + 1
-      this.updatedMonth = `0${(int_month + frequency)% 12}`
-      this.nextUpdated = this.day + ' ' + monthNames[this.updatedMonth] + ' ' + this.updatedYear
+      updated['year'] = this.int_year + 1
+      updated['month'] = monthNames[`0${(int_month + frequency)% 12}`]
     } else if (int_month + frequency == 12) {
-      this.nextUpdated = this.day + ' ' + monthNames['12'] + ' ' + this.year
+      updated['month'] = monthNames['12']
     } else {
-      this.updatedMonth = `0${(int_month + frequency)}`
-      this.nextUpdated = this.day + ' ' + monthNames[this.updatedMonth] + ' ' + this.year
+      updated['month'] = monthNames[`0${(int_month + frequency)}`]
     }
-    return this.nextUpdated
+  return updated
 }
 
-updateDate.prototype.calculate = function () {
-  if (this.isYearly) {
-    this.updatedYear = this.int_year + 1
-    this.nextUpdated = this.day + ' ' + monthNames[this.month] + ' ' + this.updatedYear
-  } else if (this.isQuarterly) {
-    this.monthUpdates(this.int_month, 4)
-  } else if (this.isMonthly) {
-    this.monthUpdates(this.int_month, 1)
+UpdateDate.prototype.dayUpdates = function () {
+  var updated = {}
+    if (this.day == this.lastOfMonth[this.month]) {
+      updated = this.monthUpdates(this.int_month, 1)
+      updated['day'] = '01'
+    } else {
+      if (this.int_day < 9) {
+        updated['day'] = `0${this.int_day + 1}`
+      } else {
+        updated['day'] = this.int_day + 1
+      }
+    }
+  return updated
+}
+
+UpdateDate.prototype.calculate = function () {
+  var updated = {}
+  if (this.yearWords.includes(this.frequency)) {
+    updated['year'] = this.int_year + 1
+  } else if (this.quarterlyWords.includes(this.frequency)) {
+    updated = this.monthUpdates(this.int_month, 4)
+  } else if (this.monthlyWords.includes(this.frequency)) {
+    updated = this.monthUpdates(this.int_month, 1)
+  } else if (this.dailyWords.includes(this.frequency)) {
+    updated = this.dayUpdates()
   } else {
+  // defaulting to Not Available for one-off, never, discontinued, and financial year
     this.nextUpdated = ''
   }
+
+  Object.assign(this.expectedUpdate, updated);
+
+  this.nextUpdated = this.expectedUpdate['day'] + ' ' + this.expectedUpdate['month'] + ' ' + this.expectedUpdate['year']
+
   return this.nextUpdated
 }
-
-updateDate.prototype.isYearly = function () {
-  this.yearWords.includes(this.frequency.toLowerCase())
-};
-
-updateDate.prototype.isQuarterly = function () {
-  this.quarterlyWords.includes(this.frequency.toLowerCase())
-};
-
-updateDate.prototype.isMonthly = function () {
-  this.monthlyWords.includes(this.frequency.toLowerCase())
-};
-
-
 
 function sanitize(text) {
   return sanitizeHtml(text, { allowedTags: [] })
