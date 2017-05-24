@@ -42,6 +42,10 @@ const processEsResponse = results =>
       newResult.location = [ newResult.location1, newResult.location2, newResult.location3]
         .filter(loc => loc)
         .join(',')
+      newResult.location = sanitize(newResult.location)
+      newResult.title = sanitize(newResult.title)
+      newResult.summary = sanitize(newResult.summary)
+      newResult.notes = sanitize(newResult.notes)
       newResult.last_updated = day + ' ' + month + ' ' + year
       newResult.next_updated = UpdateDate(newResult.update_frequency, day, newResult.last_edit_date.substr(5,2), year )
       return newResult
