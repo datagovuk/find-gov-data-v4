@@ -39,11 +39,12 @@ const processEsResponse = results =>
       const day = newResult.last_edit_date.substr(8,2)
       const month = monthNames[newResult.last_edit_date.substr(5,2)]
       const year = newResult.last_edit_date.substr(0,4)
+      const frequency = newResult.update_frequency
       newResult.location = [ newResult.location1, newResult.location2, newResult.location3]
         .filter(loc => loc)
         .join(',')
       newResult.last_updated = day + ' ' + month + ' ' + year
-      newResult.next_updated = UpdateDate(newResult.update_frequency, day, newResult.last_edit_date.substr(5,2), year )
+      newResult.next_updated = new updateDate(frequency, day, newResult.last_edit_date.substr(5,2), year).calculate()
       return newResult
     })
 
@@ -51,42 +52,63 @@ const processEsResponse = results =>
 // Calculates the expected update date, based on frequency selected and the last time the dataset
 // was updated. Doesn't yet handle weekly updates.
 
-function UpdateDate(frequency, day, month, year){
-  var yearWords = ['annual','annually', 'yearly', 'year']
-  var quarterlyWords = ['quarterly', 'quarter', 'four months', '4 months']
-  var monthlyWords = ['monthly', 'month']
-  var int_year = Number(year)
-  var int_month = Number(month)
-  var updatedMonth
-  var updatedYear
-  var nextUpdated = day + ' ' + updatedMonth + ' ' + updatedYear
+var updateDate = function (frequency, day, month, year) {
+  this.yearWords = ['annual','annually', 'yearly', 'year']
+  this.quarterlyWords = ['quarterly', 'quarter', 'four months', '4 months']
+  this.monthlyWords = ['monthly', 'month']
 
-  function monthUpdates(int_month, frequency) {
-    if (int_month + frequency > 12) {
-      updatedYear = int_year + 1
-      updatedMonth = `0${(int_month + frequency)% 12}`
-      nextUpdated = day + ' ' + monthNames[updatedMonth] + ' ' + updatedYear
-    } else if (int_month + frequency == 12) {
-      nextUpdated = day + ' ' + monthNames['12'] + ' ' + year
-    } else {
-      updatedMonth = `0${(int_month + frequency)}`
-      nextUpdated = day + ' ' + monthNames[updatedMonth] + ' ' + year
-    }
-    return nextUpdated
-  }
-
-  if (yearWords.includes(frequency.toLowerCase())) {
-    updatedYear = int_year + 1
-    nextUpdated = day + ' ' + monthNames[month] + ' ' + updatedYear
-  } else if (quarterlyWords.includes(frequency.toLowerCase())) {
-    monthUpdates(int_month, 4)
-  } else if (monthlyWords.includes(frequency.toLowerCase())) {
-    monthUpdates(int_month, 1)
-  } else {
-    nextUpdated = ''
-  }
-  return nextUpdated
+  this.int_year = Number(year)
+  this.int_month = Number(month)
+  this.month = month
+  this.day = day
+  this.year = year
+  this.frequency = frequency
+  this.updatedMonth
+  this.updatedYear
+  this.nextUpdated = this.day + ' ' + this.updatedMonth + ' ' + this.updatedYear
+  return this
 }
+
+updateDate.prototype.monthUpdates = function (int_month, frequency) {
+    if (int_month + frequency > 12) {
+      this.updatedYear = this.int_year + 1
+      this.updatedMonth = `0${(int_month + frequency)% 12}`
+      this.nextUpdated = this.day + ' ' + monthNames[this.updatedMonth] + ' ' + this.updatedYear
+    } else if (int_month + frequency == 12) {
+      this.nextUpdated = this.day + ' ' + monthNames['12'] + ' ' + this.year
+    } else {
+      this.updatedMonth = `0${(int_month + frequency)}`
+      this.nextUpdated = this.day + ' ' + monthNames[this.updatedMonth] + ' ' + this.year
+    }
+    return this.nextUpdated
+}
+
+updateDate.prototype.calculate = function () {
+  if (this.isYearly) {
+    this.updatedYear = this.int_year + 1
+    this.nextUpdated = this.day + ' ' + monthNames[this.month] + ' ' + this.updatedYear
+  } else if (this.isQuarterly) {
+    this.monthUpdates(this.int_month, 4)
+  } else if (this.isMonthly) {
+    this.monthUpdates(this.int_month, 1)
+  } else {
+    this.nextUpdated = ''
+  }
+  return this.nextUpdated
+}
+
+updateDate.prototype.isYearly = function () {
+  this.yearWords.includes(this.frequency.toLowerCase())
+};
+
+updateDate.prototype.isQuarterly = function () {
+  this.quarterlyWords.includes(this.frequency.toLowerCase())
+};
+
+updateDate.prototype.isMonthly = function () {
+  this.monthlyWords.includes(this.frequency.toLowerCase())
+};
+
 
 
 function sanitize(text) {
