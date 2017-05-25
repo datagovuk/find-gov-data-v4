@@ -26,12 +26,6 @@
       <span class="bold-small">{{ numResults }}</span>
         results found {% if query %}for
       <span class="bold-small">'{{ query }}'{% endif %}</span>
-        {% if sortBy %} sorted by
-      <span class="bold-small">'{{ sortBy | sortedByDisplay }}'{% endif %}</span>
-        {% if local or central or bodies  %} published by
-      <span class="bold-small">'{{ orgTypes | orgTypDisplay | safe   }}'{% endif %}</span>
-        {% if location %} filtered by
-      <span class="bold-small">'{{ location }}'{% endif %}</span>
     {% else %}
       <span class="bold-small">0</span> results for <span class="bold-small">'{{ query }}'
     {% endif %}
@@ -80,7 +74,7 @@
         </ul>
 
         <div class="related-searches">
-          <h2 class="heading-medium">Searches related to "road safety data"</h2>
+          <h2 class="heading-medium">Searches related to '{{query}}'</h2>
           <ul>
             <li><a href="https://find-gov-data-v2.herokuapp.com/search-results?q=stats19+data">stats19 data</a></li>
             <li><a href="">uk road accident map</a></li>
