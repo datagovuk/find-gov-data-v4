@@ -249,6 +249,7 @@ main.results-page#content .grid-row.masthead {
 
 // if there are zero results
 .zero-results {
+  padding-top: 2em;
   font-size: 19px;
   color: #6F777B;
   .suggestions {
@@ -266,7 +267,6 @@ main.results-page#content .grid-row.masthead {
 
 
 .filters {
-  margin-top: 2em;
   p {
     margin-bottom: 10px;
   }

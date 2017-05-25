@@ -19,9 +19,10 @@
       </form>
     </div>
   </div>
-  {% if numResults %}
+
   <div class="grid-row">
     <div class="column-full">
+    {% if numResults %}
       <span class="bold-small">{{ numResults }}</span>
         results found {% if query %}for
       <span class="bold-small">'{{ query }}'{% endif %}</span>
@@ -31,9 +32,12 @@
       <span class="bold-small">'{{ orgTypes | orgTypDisplay | safe   }}'{% endif %}</span>
         {% if location %} filtered by
       <span class="bold-small">'{{ location }}'{% endif %}</span>
+    {% else %}
+      <span class="bold-small">0</span> results for <span class="bold-small">'{{ query }}'
+    {% endif %}
     </div>
   </div>
-  {% endif %}
+
   {% block search_result_filters %}
     {% include "includes/search-results/filters.html" %}
   {% endblock %}
@@ -86,15 +90,14 @@
         </div>
       {% else %}
         <div class="grid-row zero-results">
-          <span class="bold-small">0</span> results for <span class="bold-small">'{{ query }}'
-            <div class="suggestions">
-              <p>Please try:</p>
-              <ul class="list list-bullet">
-                <li>Adding the publisher name when searching</li>
-                <li>Resetting your filters</li>
-                <li>Adding location information</li>
-              </ul>
-            </div>
+          <div class="suggestions">
+            <p>Please try:</p>
+            <ul class="list list-bullet">
+              <li>Adding the publisher name when searching</li>
+              <li>Resetting your filters</li>
+              <li>Adding location information</li>
+            </ul>
+          </div>
         </div>
       {% endif %}
     </div>
