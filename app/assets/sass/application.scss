@@ -223,7 +223,7 @@ main.results-page#content .grid-row.masthead {
 .result {
   border-bottom: 1px solid #BFC1C3;
   padding-bottom: 35px;
-  margin-top: 35px;
+  margin-top: 50px;
   h2 {
     margin-bottom: 10px;
     margin-top: 0;
@@ -247,11 +247,26 @@ main.results-page#content .grid-row.masthead {
   }
 }
 
+// if there are zero results
+.zero-results {
+  padding-top: 2em;
+  font-size: 19px;
+  color: #6F777B;
+  .suggestions {
+    padding-top: 1em;
+    p {
+      font-weight: bold;
+    }
+    li {
+      font-weight: normal;
+    }
+  }
+
+}
 
 
 
 .filters {
-  margin-top: 2em;
   p {
     margin-bottom: 10px;
   }

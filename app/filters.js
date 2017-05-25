@@ -113,36 +113,6 @@ module.exports = function (env) {
     return 'Not available'
   }
 
-  filters.sortedByDisplay = function(option) {
-    switch (option) {
-      case 'recent':
-        return 'Most recent'
-      case 'viewed':
-        return 'Most viewed'
-      case 'best':
-        return 'Best match'
-    }
-  }
-
-  filters.orgTypDisplay = function(orgTypes) {
-    var types = orgTypes.map(function(abreviation){
-      if (abreviation == 'central-gov') {
-        return 'Central Government'
-      } else if (abreviation =='local-auth') {
-        return 'Local Authorities'
-      } else {
-        return 'Other government bodies'
-      }
-    })
-      if (types.length == 1) {
-        return types[0]
-      } else if (types.length == 2) {
-        return `${types[0]}' <span class="normal">or</span> '${types[1]}`
-      } else {
-        return `${types[0]}', '${types[1]}' <span class="normal">or</span> '${types[2]}`
-      }
-    }
-
   filters.calculate_date = function(resource, updated) {
     if (updated == 'annually' && resource.start_date != '' ) {
       return '<td>'+resource.start_date.substring(0, 4)+'</td>'
