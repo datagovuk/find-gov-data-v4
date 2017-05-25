@@ -247,6 +247,21 @@ main.results-page#content .grid-row.masthead {
   }
 }
 
+// if there are zero results
+.zero-results {
+  font-size: 19px;
+  color: #6F777B;
+  .suggestions {
+    padding-top: 1em;
+    p {
+      font-weight: bold;
+    }
+    li {
+      font-weight: normal;
+    }
+  }
+
+}
 
 
 

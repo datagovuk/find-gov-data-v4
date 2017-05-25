@@ -58,7 +58,7 @@
 
     <div class="column-one-third related-datasets">
       {% if related_datasets | length %}
-        <h2 class="heading-small">More Transport Datasets</h2>
+        <h2 class="heading-small">Related Datasets</h2>
         <ul>
           {% for dataset in related_datasets %}
             <li><a href="/dataset/{{ dataset.name }}">{{ dataset.title | truncate(65) }}</a></li>
