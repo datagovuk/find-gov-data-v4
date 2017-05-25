@@ -6,6 +6,7 @@ var request = require('request');
 var http = require('http');
 var parse = require('csv-parse');
 var sanitizeHtml = require('sanitize-html');
+var moment = require('moment');
 
 
 
@@ -40,12 +41,12 @@ const processEsResponse = results =>
       const day = newResult.last_edit_date.substr(8,2)
       const month = monthNames[newResult.last_edit_date.substr(5,2)]
       const year = newResult.last_edit_date.substr(0,4)
-      const frequency = newResult.update_frequency
+      const frequency = newResult.update_frequency || 'none'
       newResult.location = [ newResult.location1, newResult.location2, newResult.location3]
         .filter(loc => loc)
         .join(',')
       newResult.last_updated = day + ' ' + month + ' ' + year
-      newResult.next_updated = new UpdateDate(frequency, day, newResult.last_edit_date.substr(5,2), year).calculate()
+      newResult.next_updated = updateDate(frequency, newResult.last_edit_date)
       return newResult
     })
 
@@ -53,76 +54,46 @@ const processEsResponse = results =>
 // Calculates the expected update date, based on frequency selected and the last time the dataset
 // was updated.
 
-var UpdateDate = function (frequency, day, month, year) {
-  this.yearWords = ['annual','annually', 'yearly', 'year']
-  this.quarterlyWords = ['quarterly', 'quarter', 'four months', '4 months', 'quarterly calendar']
-  this.monthlyWords = ['monthly', 'month']
-  this.dailyWords = ['daily', 'per day', 'day']
-  this.lastOfMonth = {'01':'31', '02':'28', '03':'31', '04':'30', '05':'31', '06':'30', '07':'31', '08':'31', '09':'30', '10':'31', '11':'30', '12':'31'}
+function updateDate(frequency, lastEditDate){
 
-  this.int_year = Number(year)
-  this.int_month = Number(month)
-  this.int_day = Number(day)
-  this.month = month
-  this.day = day
-  this.year = year
-  this.frequency = frequency.toLowerCase()
-  this.updatedMonth
-  this.updatedYear
+  var lastEditDate = moment(lastEditDate);
+  var frequency = frequency.toLowerCase()
+  var nextUpdated = ''
 
-  this.expectedUpdate = {'day': this.day, 'month': monthNames[this.month], 'year': this.year }
-
-  return this
-}
-
-UpdateDate.prototype.monthUpdates = function (int_month, frequency) {
-  var updated = {}
-    if (int_month + frequency > 12) {
-      updated['year'] = this.int_year + 1
-      updated['month'] = monthNames[`0${(int_month + frequency)% 12}`]
-    } else if (int_month + frequency == 12) {
-      updated['month'] = monthNames['12']
-    } else {
-      updated['month'] = monthNames[`0${(int_month + frequency)}`]
-    }
-  return updated
-}
-
-UpdateDate.prototype.dayUpdates = function () {
-  var updated = {}
-    if (this.day == this.lastOfMonth[this.month]) {
-      updated = this.monthUpdates(this.int_month, 1)
-      updated['day'] = '01'
-    } else {
-      if (this.int_day < 9) {
-        updated['day'] = `0${this.int_day + 1}`
-      } else {
-        updated['day'] = this.int_day + 1
-      }
-    }
-  return updated
-}
-
-UpdateDate.prototype.calculate = function () {
-  var updated = {}
-  if (this.yearWords.includes(this.frequency)) {
-    updated['year'] = this.int_year + 1
-  } else if (this.quarterlyWords.includes(this.frequency)) {
-    updated = this.monthUpdates(this.int_month, 4)
-  } else if (this.monthlyWords.includes(this.frequency)) {
-    updated = this.monthUpdates(this.int_month, 1)
-  } else if (this.dailyWords.includes(this.frequency)) {
-    updated = this.dayUpdates()
-  } else {
-  // defaulting to Not Available for one-off, never, discontinued, and financial year
-    this.nextUpdated = ''
+  function formatDate(date){
+    return moment(date).format("D MMMM YYYY")
   }
 
-  Object.assign(this.expectedUpdate, updated);
-
-  this.nextUpdated = this.expectedUpdate['day'] + ' ' + this.expectedUpdate['month'] + ' ' + this.expectedUpdate['year']
-
-  return this.nextUpdated
+  switch(frequency) {
+    case('annual'):
+      date = moment(lastEditDate).add(1, 'years')
+      nextUpdated = `${formatDate(date)}`
+      break
+    case('quarterly'):
+      date = moment(lastEditDate).add(4, 'months')
+      nextUpdated = `${formatDate(date)}`
+      break
+    case('monthly'):
+      date = moment(lastEditDate).add(1, 'months')
+      nextUpdated = `${formatDate(date)}`
+      break
+    case('daily'):
+      date = moment(lastEditDate).add(4, 'days')
+      nextUpdated = `${formatDate(date)}`
+      break
+    case('discontinued'):
+      nextUpdated = 'Dataset no longer updated'
+      break
+    case('never'):
+      nextUpdated = 'No future updates'
+      break
+    case('one off'):
+      nextUpdated = 'No future updates'
+      break
+    default:
+      nextUpdated = 'Not available'
+  }
+  return nextUpdated
 }
 
 function sanitize(text) {
