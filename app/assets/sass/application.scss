@@ -621,11 +621,13 @@ h3.heading-medium.related {
 }
 
 .related-datasets {
-
-  h3:first-of-type {
-    margin-top: 134px;
-    padding-top: 30px;
-    border-top: 10px solid #F8F8F8;
+  h2 {
+    margin-top: 2em;
+    &:first-of-type {
+      margin-top: 0;
+      padding-top: 30px;
+      border-top: 10px solid #F8F8F8;
+    }
   }
 }
 
