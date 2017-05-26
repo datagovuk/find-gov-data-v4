@@ -114,15 +114,26 @@ module.exports = function (env) {
   }
 
   filters.calculate_date = function(resource, updated) {
-    if (updated == 'annually' && resource.start_date != '' ) {
-      return '<td>'+resource.start_date.substring(0, 4)+'</td>'
+    const start = resource.start_date
+    if (start) {
+      const year = start.substring(0, 4)
+      const month = start.substring(5, 7)
+      const day = start.substring(8, 11)
+      switch(updated) {
+        case 'annually':
+        case 'financial-year':
+          return `<td>${year}</td>`
+        case 'weekly':
+          return `<td>${day}/${month}/${year}</td>`
+        case 'monthly':
+        case 'quarterly':
+          return `<td>${month}/${year}</td>`
+        case 'daily':
+          return '<td>Continuous</td>'
+        default:
+          return '<td class="no-date-added">Not applicable</td>'
+      }
     }
-
-    if (updated == 'daily') {
-      return '<td>Continuous</td>'
-    }
-
-    return '<td class="no-date-added">Not applicable</td>'
   }
 
   filters.display_line_count = function( lineCount ) {
