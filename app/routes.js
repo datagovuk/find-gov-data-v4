@@ -65,7 +65,7 @@ function updateDate(frequency, lastEditDate){
   var nextUpdated = ''
 
   function formatDate(date){
-    return moment(date).format("D MMMM YYYY")
+    return moment(date).format("DD MMMM YYYY")
   }
 
   switch(frequency) {
