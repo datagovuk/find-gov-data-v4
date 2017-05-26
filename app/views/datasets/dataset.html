@@ -39,11 +39,9 @@
           <dt>Last updated:</dt>
           <dd>{{ result.last_updated }}</dd>
           <dt>Expected update:</dt>
-        {% if result.next_updated %}
-          <dd>{{ result.next_updated }}</dd>
-        {% else %}
-          <dd class="unavailable">Not available</dd>
-        {% endif %}
+          <dd {% if result.next_updated == 'Not available' %}class='unavailable'{% endif %}>
+            {{ result.next_updated }}
+          </dd>
           <dt>Geographical area:</dt>
           <dd class="unavailable">Not applicable</dd>
         </dl>

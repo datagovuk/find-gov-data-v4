@@ -6,6 +6,8 @@ var request = require('request');
 var http = require('http');
 var parse = require('csv-parse');
 var sanitizeHtml = require('sanitize-html');
+var moment = require('moment');
+
 
 
 const esClient = new elasticsearch.Client({
@@ -39,6 +41,7 @@ const processEsResponse = results =>
       const day = newResult.last_edit_date.substr(8,2)
       const month = monthNames[newResult.last_edit_date.substr(5,2)]
       const year = newResult.last_edit_date.substr(0,4)
+      const frequency = newResult.update_frequency || 'none'
       newResult.location = [ newResult.location1, newResult.location2, newResult.location3]
         .filter(loc => loc)
         .join(',')
@@ -47,51 +50,55 @@ const processEsResponse = results =>
       newResult.summary = sanitize(newResult.summary)
       newResult.notes = sanitize(newResult.notes)
       newResult.last_updated = day + ' ' + month + ' ' + year
-      newResult.next_updated = UpdateDate(newResult.update_frequency, day, newResult.last_edit_date.substr(5,2), year )
+      newResult.next_updated = updateDate(frequency, newResult.last_edit_date)
       return newResult
     })
 
 
 // Calculates the expected update date, based on frequency selected and the last time the dataset
-// was updated. Doesn't yet handle weekly updates.
+// was updated.
 
-function UpdateDate(frequency, day, month, year){
-  var yearWords = ['annual','annually', 'yearly', 'year']
-  var quarterlyWords = ['quarterly', 'quarter', 'four months', '4 months']
-  var monthlyWords = ['monthly', 'month']
-  var int_year = Number(year)
-  var int_month = Number(month)
-  var updatedMonth
-  var updatedYear
-  var nextUpdated = day + ' ' + updatedMonth + ' ' + updatedYear
+function updateDate(frequency, lastEditDate){
 
-  function monthUpdates(int_month, frequency) {
-    if (int_month + frequency > 12) {
-      updatedYear = int_year + 1
-      updatedMonth = `0${(int_month + frequency)% 12}`
-      nextUpdated = day + ' ' + monthNames[updatedMonth] + ' ' + updatedYear
-    } else if (int_month + frequency == 12) {
-      nextUpdated = day + ' ' + monthNames['12'] + ' ' + year
-    } else {
-      updatedMonth = `0${(int_month + frequency)}`
-      nextUpdated = day + ' ' + monthNames[updatedMonth] + ' ' + year
-    }
-    return nextUpdated
+  var lastEditDate = moment(lastEditDate);
+  var frequency = frequency.toLowerCase()
+  var nextUpdated = ''
+
+  function formatDate(date){
+    return moment(date).format("D MMMM YYYY")
   }
 
-  if (yearWords.includes(frequency.toLowerCase())) {
-    updatedYear = int_year + 1
-    nextUpdated = day + ' ' + monthNames[month] + ' ' + updatedYear
-  } else if (quarterlyWords.includes(frequency.toLowerCase())) {
-    monthUpdates(int_month, 4)
-  } else if (monthlyWords.includes(frequency.toLowerCase())) {
-    monthUpdates(int_month, 1)
-  } else {
-    nextUpdated = ''
+  switch(frequency) {
+    case('annual'):
+      date = moment(lastEditDate).add(1, 'years')
+      nextUpdated = `${formatDate(date)}`
+      break
+    case('quarterly'):
+      date = moment(lastEditDate).add(4, 'months')
+      nextUpdated = `${formatDate(date)}`
+      break
+    case('monthly'):
+      date = moment(lastEditDate).add(1, 'months')
+      nextUpdated = `${formatDate(date)}`
+      break
+    case('daily'):
+      date = moment(lastEditDate).add(4, 'days')
+      nextUpdated = `${formatDate(date)}`
+      break
+    case('discontinued'):
+      nextUpdated = 'Dataset no longer updated'
+      break
+    case('never'):
+      nextUpdated = 'No future updates'
+      break
+    case('one off'):
+      nextUpdated = 'No future updates'
+      break
+    default:
+      nextUpdated = 'Not available'
   }
   return nextUpdated
 }
-
 
 function sanitize(text) {
   // This should work according to the documentation, but doesn't
