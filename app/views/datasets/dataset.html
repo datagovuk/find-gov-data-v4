@@ -50,7 +50,11 @@
             {{ result.next_updated }}
           </dd>
           <dt>Geographical area:</dt>
-          <dd class="unavailable">Not applicable</dd>
+          {% if result.location %}
+            <dd>{{ result.location }}</dd>
+          {% else %}
+            <dd class="unavailable">Not applicable</dd>
+          {% endif %}
         </dl>
 
         <h2 class="heading-small">

@@ -296,7 +296,10 @@ function renderDataset(template, req, res, next) {
       result.title = sanitize(result.title)
       result.summary = sanitize(result.summary)
       result.notes = sanitize(result.notes)
-      result.location = sanitize(result.location)
+      const location = [result.location1]
+      if (result.location2) location.push(result.location2)
+      if (result.location3) location.push(result.location3)
+      result.location = sanitize(location.join(','))
       get_more_like_this(result, 3)
         .then( matches => {
           res.render(template, {
