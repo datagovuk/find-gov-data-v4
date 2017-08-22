@@ -11,7 +11,7 @@ var moment = require('moment');
 
 
 const esClient = new elasticsearch.Client({
-  host: process.env.ES_HOSTS,
+  host: process.env.ES_HOST,
 //  log: 'trace'
 })
 
@@ -38,9 +38,9 @@ const processEsResponse = results =>
   results.hits.hits
     .map(result => {
       var newResult = result._source
-      const day = newResult.last_edit_date.substr(8,2)
-      const month = monthNames[newResult.last_edit_date.substr(5,2)]
-      const year = newResult.last_edit_date.substr(0,4)
+      const day = newResult.updated_at.substr(8,2)
+      const month = monthNames[newResult.updated_at.substr(5,2)]
+      const year = newResult.updated_at.substr(0,4)
       const frequency = newResult.update_frequency || 'none'
       newResult.location = [ newResult.location1, newResult.location2, newResult.location3]
         .filter(loc => loc)
@@ -50,7 +50,7 @@ const processEsResponse = results =>
       newResult.summary = sanitize(newResult.summary)
       newResult.notes = sanitize(newResult.notes)
       newResult.last_updated = day + ' ' + month + ' ' + year
-      newResult.next_updated = updateDate(frequency, newResult.last_edit_date)
+      newResult.next_updated = updateDate(frequency, newResult.updated_at)
       return newResult
     })
 
@@ -257,7 +257,6 @@ function renderDataset(template, req, res, next) {
       query: { term: { name : req.params.name } }
     }
   }
-
   const backURL = req.header('Referer') || '/';
 
   esClient.search(esQuery, (esError, esResponse) => {
@@ -267,7 +266,7 @@ function renderDataset(template, req, res, next) {
     const groupByDate = function(result){
       var groups = []
 
-      result.resources.forEach(function(datafile){
+      result.datafiles.forEach(function(datafile){
         if (datafile['start_date']) {
           const yearArray = groups.filter(yearObj => yearObj.year == datafile['start_date'].substr(0,4))
           if (yearArray.length === 0) {
