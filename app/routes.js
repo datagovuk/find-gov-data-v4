@@ -38,9 +38,9 @@ const processEsResponse = results =>
   results.hits.hits
     .map(result => {
       var newResult = result._source
-      const day = newResult.updated_at.substr(8,2)
-      const month = monthNames[newResult.updated_at.substr(5,2)]
-      const year = newResult.updated_at.substr(0,4)
+      const day = newResult.last_updated_at.substr(8,2)
+      const month = monthNames[newResult.last_updated_at.substr(5,2)]
+      const year = newResult.last_updated_at.substr(0,4)
       const frequency = newResult.update_frequency || 'none'
       newResult.location = [ newResult.location1, newResult.location2, newResult.location3]
         .filter(loc => loc)
@@ -50,7 +50,7 @@ const processEsResponse = results =>
       newResult.summary = sanitize(newResult.summary)
       newResult.notes = sanitize(newResult.notes)
       newResult.last_updated = day + ' ' + month + ' ' + year
-      newResult.next_updated = updateDate(frequency, newResult.updated_at)
+      newResult.next_updated = updateDate(frequency, newResult.last_updated_at)
       return newResult
     })
 
@@ -173,7 +173,7 @@ router.get('/search-results', function(req, res, next) {
   // scores yet, so we'll cheat and use the name of the dataset
   switch(sortBy) {
       case "recent":
-          esQuery.sort = "last_edit_date:desc"
+          esQuery.sort = "last_updated_at:desc"
           break;
       case "viewed":
           esQuery.sort = "name:asc"
@@ -265,7 +265,6 @@ function renderDataset(template, req, res, next) {
 
     const groupByDate = function(result){
       var groups = []
-
       result.datafiles.forEach(function(datafile){
         if (datafile['start_date']) {
           const yearArray = groups.filter(yearObj => yearObj.year == datafile['start_date'].substr(0,4))
@@ -383,7 +382,7 @@ router.get('/preview-1/:datasetname/:datafileid', function (req, res) {
   }
 
   esClient.search(esQuery, (esError, esResponse) => {
-    const datalink = esResponse.hits.hits[0]._source.resources
+    const datalink = esResponse.hits.hits[0]._source.datafiles
       .filter(l => l.id == req.params.datafileid)[0]
     const dataset_title = esResponse.hits.hits[0]._source.title
 

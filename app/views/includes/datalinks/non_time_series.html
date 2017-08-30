@@ -10,8 +10,8 @@
       <th>Data preview</th>
     </tr>
     <tbody>
-    {% for datafile in result.resources %}
-      <tr {% if result.resources.slice(5).includes(datafile) %} class='js-show-more-datafiles' {% endif %}>
+    {% for datafile in result.datafiles %}
+      <tr {% if result.datafiles.slice(5).includes(datafile) %} class='js-show-more-datafiles' {% endif %}>
         <td class="title"><a href="{{ datafile.url }}">
           {{ datafile.name or "Data Link"}}
         </td>
@@ -37,7 +37,7 @@
     {% endfor %}
     </tbody>
   </table>
-  {% if (result.resources | length) > 5 %}
+  {% if (result.datafiles | length) > 5 %}
     <p class="show-toggle">Show more</a>
   {% endif %}
   <br />

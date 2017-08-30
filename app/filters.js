@@ -64,34 +64,34 @@ module.exports = function (env) {
     const start_idx = 160
     const seek_idx = 30
 
-    if (dataset.notes.length <= start_idx ||
-        dataset.notes[start_idx] in stop_punctuation ) {
-      return dataset.notes
+    if (dataset.summary.length <= start_idx ||
+        dataset.summary[start_idx] in stop_punctuation ) {
+      return dataset.summary
     }
 
     // Is there punctuation up to 30 chars before the pivot point?
     for( var i = start_idx; i >= start_idx-seek_idx; i--) {
-      if ( stop_punctuation.indexOf(dataset.notes[i]) != -1) {
-        return dataset.notes.substring(0, i)
+      if ( stop_punctuation.indexOf(dataset.summary[i]) != -1) {
+        return dataset.summary.substring(0, i)
       }
     }
 
     // Is there punctuation up to 30 chars after the pivot point
     for( var i = start_idx; i <= start_idx+seek_idx; i++) {
-      if (stop_punctuation.indexOf(dataset.notes[i]) != -1) {
-        return dataset.notes.substring(0, i)
+      if (stop_punctuation.indexOf(dataset.summary[i]) != -1) {
+        return dataset.summary.substring(0, i)
       }
     }
 
     // Panic stations, is this description actually just a
     // single sentence?
     for( var i = start_idx; i >= 0; i--) {
-      if ( stop_punctuation.indexOf(dataset.notes[i]) != -1) {
-        return dataset.notes.substring(0, i)
+      if ( stop_punctuation.indexOf(dataset.summary[i]) != -1) {
+        return dataset.summary.substring(0, i)
       }
     }
 
-    return dataset.notes.substring(0, start_idx)
+    return dataset.summary.substring(0, start_idx)
   }
 
   filters.datalink_updated = function(datalink) {
