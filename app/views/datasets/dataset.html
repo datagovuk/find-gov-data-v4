@@ -9,22 +9,24 @@
 <main id="content" role="main">
 
   <div class="grid-row">
-    <div class="breadcrumbs">
-      <ol role="breadcrumbs">
-        <li><a href="/">Home</a></li>
-          <!-- Checking if 'search-results' is in the referrer URL
-          to pick up whether or not the user has come from our search results page,
-          or from say google. Need to change when we know our URL -->
-          {% set regExp = r/.*search-results.*/gi %}
-        <li>
-          {% if regExp.test(back) %}
-          <a href="{{back}}">Search Results</a>
-        </li>
-          {% else %}
-          <a href="">{{ result.organisation.title }}</a>
-          {% endif %}
-        <li>{{ result.title }}</li>
-      </ol>
+    <div class="column-full">
+      <div class="breadcrumbs">
+        <ol role="breadcrumbs">
+          <li><a href="/">Home</a></li>
+            <!-- Checking if 'search-results' is in the referrer URL
+            to pick up whether or not the user has come from our search results page,
+            or from say google. Need to change when we know our URL -->
+            {% set regExp = r/.*search-results.*/gi %}
+          <li>
+            {% if regExp.test(back) %}
+            <a href="{{back}}">Search Results</a>
+          </li>
+            {% else %}
+            <a href="">{{ result.organisation.title }}</a>
+            {% endif %}
+          <li>{{ result.title }}</li>
+        </ol>
+      </div>
     </div>
   </div>
 
@@ -45,10 +47,6 @@
           <dd><a href="">{{ result.organisation.title }}</a></dd>
           <dt>Last updated:</dt>
           <dd>{{ result.last_updated }}</dd>
-          <dt>Expected update:</dt>
-          <dd {% if result.next_updated == 'Not available' %}class='unavailable'{% endif %}>
-            {{ result.next_updated }}
-          </dd>
           <dt>Geographical area:</dt>
           {% if result.location %}
             <dd>{{ result.location }}</dd>
@@ -66,15 +64,14 @@
     </div>
 
     <div class="column-one-third related-datasets">
-      {% if related_datasets | length %}
-        <h2 class="heading-small">Related Datasets</h2>
-        <ul>
-          {% for dataset in related_datasets %}
-            <li><a href="/dataset/{{ dataset.name }}">{{ dataset.title | truncate(65) }}</a></li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-      <h2 class="heading-small related">Search UK Government data</h2>
+      <h2 class="heading-small">Related Datasets</h2>
+      <ul>
+          <li><a href="">Road Safety</a></li>
+          <li><a href="">Database of BAC levels in road fatalities</a></li>
+          <li><a href="">Scottish Road Accident Statistics</a></li>
+          <li><a href="">Road Casualties in Great Britain: Annual Results</a></li>
+      </ul>
+      <h2 class="heading-small">Search UK Government data</h2>
       {% block top_search %}
         <form id="search-form" action="/search-results" method="GET" class="top-search">
           <fieldset>
@@ -94,7 +91,7 @@
 
 <!-- Datalinks section -->
       {% if result.datafiles | length %}
-        <section>
+        <section class="data-files">
           {% if groups|length %}
 
             {% block time_series_datalinks %}
@@ -109,6 +106,11 @@
 
           {% endif %}
         </section>
+      {% else %}
+        <section class="data-files">
+          <h2 class="heading-medium">Data links</h2>
+          <p class="unavailable">This dataset doesn't have any data files yet.</p>
+        </section>
       {% endif %}
 <!---->
 
@@ -116,9 +118,6 @@
         <h2 class="heading-medium">
           Additional information
         </h2>
-        <p class="additional-information">
-          {{ result.notes }}
-        </p>
         <p class="additional-information"> This dataset is available under the <a href="">Open Government Licence</a>. All the data variables are coded rather than
         containing textual strings. The look up tables are available under "Additional resources" section towards the border-bottom
         of the table for the 2015 data.
@@ -156,27 +155,31 @@
         </section>
       {% endif %}
 
-      {% if result.organisation.contact_name or result.organisation.contact_email %}
-        <section class = "contact">
-          <h2 class="heading-medium">
-            Contact
-          </h2>
-          <div class="column-one-half">
-            <h3 class="heading-small">
-              Enquiries
-            </h3>
-            <p>{{ result.organisation.contact_name }} </br> <a href="">{{ result.organisation.contact_email }}</a> </p>
-          </div>
+      <section class = "contact">
+        <h2 class="heading-medium">
+          Contact
+        </h2>
+        <div class="column-one-half">
+          <h3 class="heading-small">
+            Enquiries
+          </h3>
           {% if result.organisation.foi_name or result.organisation.foi_email %}
-            <div class="column-one-half foi">
-              <h3 class="heading-small">
-                Freedom of Information (FOI) requests
-              </h3>
-              <p>{{ result.organisation.foi_name }} </br> <a href="">{{ result.organisation.foi_email }}</a> </p>
-            </div>
+            <p>{{ result.organisation.contact_name }} </br> <a href="">{{ result.organisation.contact_email }}</a> </p>
+          {% else %}
+            <p class="unavailable">Not available</p>
           {% endif %}
-        </section>
-      {% endif %}
+        </div>
+        <div class="column-one-half foi">
+          <h3 class="heading-small">
+            Freedom of Information (FOI) requests
+          </h3>
+          {% if result.organisation.foi_name or result.organisation.foi_email %}
+            <p>{{ result.organisation.foi_name }} </br> <a href="">{{ result.organisation.foi_email }}</a> </p>
+            {% else %}
+            <p class="unavailable">Not available</p>
+          {% endif %}
+        </div>
+      </section>
 
       <section id="feedback">
         <div>
