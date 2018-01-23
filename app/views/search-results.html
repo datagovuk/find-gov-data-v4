@@ -20,23 +20,31 @@
     </div>
   </div>
 
-  <div class="grid-row">
-    <div class="column-full">
-    {% if numResults %}
-      <span class="bold-small">{{ numResults }}</span>
-        results found {% if query %}for
-      <span class="bold-small">'{{ query }}'{% endif %}</span>
-    {% else %}
-      <span class="bold-small">0</span> results for <span class="bold-small">'{{ query }}'
-    {% endif %}
-    </div>
-  </div>
-
   {% block search_result_filters %}
     {% include "includes/search-results/filters.html" %}
   {% endblock %}
 
     <div class="column-two-thirds filters">
+
+      <div class="result-sort">
+        <div class="result-number">
+          {% if numResults %}
+            <span class="bold-small">{{ numResults }}</span>
+              results found {% if query %}for
+            <span class="bold-small">'{{ query }}'{% endif %}</span>
+          {% else %}
+            <span class="bold-small">0</span> results for <span class="bold-small">'{{ query }}'
+          {% endif %}
+        </div>
+        <div class="dgu-sort">
+          <label>
+            <select id="sort-datasets" name="sort">
+              <option value="best">Best match</option>
+              <option>Most recent</option>
+            </select>
+          </label>
+        </div>
+      </div>
       {% set regExp = r/.*register.*/gi %}
 
       {% for dataset in results %}
@@ -64,32 +72,27 @@
       {% endfor %}
 
       {% if numResults > 0 %}
-        <ul class="pagination">
-          <br />
+      <div class="pagination">
+        <p>Displaying datasets 1 - 20 of 392 in total</p>
+        <ul class="pages">
           <li>1</li>
           <li><a href="#">2</a></li>
           <li><a href="#">3</a></li>
-          <li><a href="#">4</a></li>
-          <li><a href="#">5</a></li>
+          <li><a href="#">...</a></li>
+          <li><a href="#">Next</a></li>
         </ul>
+        
+      </div>
 
-        <div class="related-searches">
-          <h2 class="heading-medium">Searches related to '{{query}}'</h2>
-          <ul>
-            <li><a href="https://find-gov-data-v2.herokuapp.com/search-results?q=stats19+data">stats19 data</a></li>
-            <li><a href="">uk road accident map</a></li>
-            <li><a href="https://find-gov-data-v2.herokuapp.com/search-results?q=uk+road+accident+map">road accident statistics uk</a></li>
-            <li><a href="https://find-gov-data-v2.herokuapp.com/search-results?q=road+accident+data">road accident data</a></li>
-          </ul>
-        </div>
+
+
       {% else %}
         <div class="grid-row zero-results">
           <div class="suggestions">
             <p>Please try:</p>
             <ul class="list list-bullet">
-              <li>Adding the publisher name when searching</li>
-              <li>Resetting your filters</li>
-              <li>Adding location information</li>
+              <li>Searching again using different words</li>
+              <li>Clearing your filters</li>
             </ul>
           </div>
         </div>
