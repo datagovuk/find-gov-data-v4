@@ -7,29 +7,73 @@
 
 {% block content %}
 
-<main id="content" role="main">
+<main class="results-page" id="content" role="main">
 
-  <div class="masthead">
-
-    <div class="grid-row">
-
+  <div class="grid-row masthead">
+    <div class="search-section">
       <div class="column-two-thirds">
-        <h1 class="heading-xlarge">
-          Find open data
-        </h1>
-
-        <p class="lede">
-          Find data published by central government, local authorities and public bodies to help you build products and services
-        </p>
+        <h1 class="heading-xlarge">Find open data</h1>
+        <p class="lede">Find data published by central government, local authorities and public bodies to help you build products and services</p>
+        <form id="search-form" action="/search-results" method="GET">
+          <fieldset>
+            <div id="search-box">
+              <input id="q" name="q" type="text" placeholder="" class="form-control search" autocomplete="off"/><button type="submit" class="search-submit">Find data</button>
+            </div>
+          </fieldset>
+        </form>
       </div>
-
-      <form id="search-form" action="/search-results" method="GET" class="column-two-thirds">
-        <fieldset>
-          <div id="search-box">
-            <input id="q" name="q" type="text" placeholder="" class="form-control search" autocomplete="off"/><button type="submit" class="search-submit">Find data</button>
-          </div>
-        </fieldset>
-      </form>
+    </div>
+  </div>
+  <div class="grid-row">
+    <div class="theme column-one-third">
+      <h2 class="heading-small"><a href="">Business and economy</a></h2>
+      <p>Small businesses, industry, imports, exports and trade</p>
+    </div>
+    <div class="theme column-one-third">
+      <h2 class="heading-small"><a href="">Environment</a></h2>
+      <p>Weather, flooding, rivers, air quality, geology and agriculture</p>
+    </div>
+    <div class="theme column-one-third">
+      <h2 class="heading-small"><a href="">Mapping</a></h2>
+      <p>Addresses, boundaries, land ownership, aerial photographs, seabed and land terrain</p>
+    </div>
+    <div class="theme column-one-third">
+      <h2 class="heading-small"><a href="">Crime and justice</a></h2>
+      <p>Courts, police, prisons, offenders, borders and immigration</p>
+    </div>
+    <div class="theme column-one-third">
+      <h2 class="heading-small"><a href="">Government</a></h2>
+      <p>Staff numbers and pay, local councillors and department business plans</p>
+    </div>
+    <div class="theme column-one-third">
+      <h2 class="heading-small"><a href="">Society</a></h2>
+      <p>Employment, benefits, household finances, poverty and population</p>
+    </div>
+  </div>
+  <div class="grid-row">
+    <div class="theme column-one-third">
+      <h2 class="heading-small"><a href="">Defence</a></h2>
+      <p>Armed forces, health and safety, search and rescue</p>
+    </div>
+    <div class="theme column-one-third">
+      <h2 class="heading-small"><a href="">Government spending</a></h2>
+      <p>Includes all payments by government departments over £25,000</p>
+    </div>
+    <div class="theme column-one-third">
+      <h2 class="heading-small"><a href="">Towns and cities</a></h2>
+      <p>Includes housing, urban planning, leisure, waste and energy consumption</p>
+    </div>
+    <div class="theme column-one-third">
+      <h2 class="heading-small"><a href="">Education</a></h2>
+      <p>Students, training, qualifications and the National Curriculum</p>
+    </div>
+    <div class="theme column-one-third">
+      <h2 class="heading-small"><a href="">Health</a></h2>
+      <p>Includes smoking, drugs, alcohol, medicine performance and hospitals</p>
+    </div>
+    <div class="theme column-one-third">
+      <h2 class="heading-small"><a href="">Transport</a></h2>
+      <p>Airports, roads, freight, electric vehicles, parking, buses and footpaths</p>
     </div>
   </div>
 

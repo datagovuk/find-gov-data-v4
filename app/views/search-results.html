@@ -9,14 +9,16 @@
 <main class="results-page" id="content" role="main">
   <div class="grid-row masthead">
     <div class="search-section">
-      <h1 class="heading-large">Search results for</h1>
-      <form id="search-form" action="/search-results" method="GET" class="column-two-thirds">
-        <fieldset>
-          <div id="search-box">
-            <input id="q" name="q" type="text" placeholder="" class="form-control search" autocomplete="off" value="{{query}}"/><button type="submit" class="search-submit">Find data</button>
-          </div>
-        </fieldset>
-      </form>
+      <div class="column-two-thirds">
+        <h1 class="heading-large">Search results for</h1>
+        <form id="search-form" action="/search-results" method="GET" >
+          <fieldset>
+            <div id="search-box">
+              <input id="q" name="q" type="text" placeholder="" class="form-control search" autocomplete="off" value="{{query}}"/><button type="submit" class="search-submit">Find data</button>
+            </div>
+          </fieldset>
+        </form>       
+      </div>
     </div>
   </div>
 
