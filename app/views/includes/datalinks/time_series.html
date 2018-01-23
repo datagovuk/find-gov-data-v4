@@ -15,7 +15,6 @@
       <table>
         <tr>
           <th class="title">Link to the data</th>
-          <th>Time period</th>
           <th>Format</th>
           <th>Last updated</th>
           <th>Data preview</th>
@@ -28,7 +27,6 @@
                 {% else %} Data Link
                 {% endif %}
               </td>
-              {{ datafile | calculate_date(result.update_frequency) | safe }}
               {% if datafile.format %}
               <td>{{ datafile.format | upper }} {{ datafile | get_link_size }}</td>
               {% else %}
@@ -39,7 +37,7 @@
               </td>
               <td>
                 {% if datafile.format === 'CSV' %}
-                  <a href="/preview-1/{{ result.name }}/{{ datafile.id }}">Preview</a>
+                  <a href="/preview-1.html">Preview</a>
                 {% elif datafile.format === 'HTML' %}
                   <a href="{{ datafile.url }}">Go to site</a>
                 {% else %}

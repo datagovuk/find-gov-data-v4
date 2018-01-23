@@ -57,6 +57,32 @@ $path: "/public/images/";
   }
 }
 
+#global-header .header-proposition #proposition-links a:hover, #global-header .header-proposition #proposition-links a:active {
+  font-weight: bold;
+}
+
+.panel-beta {
+  // border: 5px solid #bfc1c3;
+  padding: 15px 20px;
+  margin-top: 25px;
+  background: #005EA5;
+  color: #fff;
+  font-weight: bold;
+  a, a:hover, a:visited {
+    color: #fff;
+    font-weight: normal;
+  }
+}
+
+.heading-xlarge {
+  margin-top: 80px;
+  margin-bottom: 30px;
+}
+
+p.lede {
+  margin-bottom: 30px;
+}
+
 .heading-large {
   margin-top: 1.5em;
   margin-bottom: 40px;
@@ -173,6 +199,10 @@ table th.title, table td.title {
   padding-bottom: 1em;
 }
 
+section.data-files {
+  overflow: hidden;
+}
+
 section table {
   margin-bottom: 20px;
 }
@@ -249,11 +279,8 @@ main.results-page#content .grid-row.masthead {
 
 // if there are zero results
 .zero-results {
-  padding-top: 2em;
   font-size: 19px;
-  color: #6F777B;
   .suggestions {
-    padding-top: 1em;
     p {
       font-weight: bold;
     }
@@ -277,7 +304,7 @@ main.results-page#content .grid-row.masthead {
   input.button {
     margin-top: 30px;
   }
-  h2.first-filter {
+  h2 {
     margin-top: 0;
   }
 }
@@ -384,7 +411,8 @@ main.results-page#content .grid-row.masthead {
   padding-top: .5em;
 }
 
-ul.pagination {
+ul.pages {
+  float: right;
   list-style-type: none;
   li {
     display: inline-block;
@@ -557,10 +585,36 @@ a:focus {
   text-decoration: underline;
   margin-top: 20px;
   box-shadow: none;
+  display: block;
+  padding-left: 0;
 }
 
 .form-label {
   margin-bottom: 5px;
+}
+
+div#location {
+  margin-bottom: 1em;
+  position: relative;
+  span {
+    position: absolute;
+    padding: 6px;
+  }
+}
+
+.filters div#location, .filters .form-control {
+  background-image: url(/public/images/triangle.svg);
+  background-repeat: no-repeat;
+  background-position: 260px 11px;
+  background-size: 16px;
+}
+
+.filters div#location {
+  background-position: 260px 13px;
+}
+
+div.multiple-choice {
+  margin-top: 7px;
 }
 
 main.results-page#content {
@@ -589,6 +643,30 @@ main.results-page#content .grid-row.masthead {
   font-weight: normal;
 }
 
+.result-sort {
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.result-number {
+  float: left;
+  margin-left: 25px;
+}
+
+.dgu-sort select {
+  border: 0 !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  font-size: 19px;
+  background: none;
+  float: right;
+  margin-top: 2px;
+  padding-right: 13px;
+  background-image: url(/public/images/triangle.svg);
+  background-repeat: no-repeat;
+  background-position: 105px 8px;
+}
+
 .result {
   padding-left: 0;
   padding-top: 0;
@@ -599,8 +677,15 @@ main.results-page#content .grid-row.masthead {
   }
 }
 
-.pagination, .related-searches {
+.pagination, .related-searches, .suggestions {
   margin-left: 25px;
+  overflow: hidden;
+  margin-top: 45px;
+}
+
+.pagination p {
+  float: left;
+  margin: 0;
 }
 
 .column-one-third.related-datasets {
@@ -622,7 +707,6 @@ h3.heading-medium.related {
 
 .related-datasets {
   h2 {
-    margin-top: 2em;
     &:first-of-type {
       margin-top: 0;
       padding-top: 30px;
@@ -653,10 +737,6 @@ input.form-control.search {
 
 //preview page
 
-main.preview#content {
-  max-width: 100%;
-  margin-left: 5%;
-}
 
 section.preview {
   margin-top: 40px;
@@ -724,14 +804,19 @@ p.table-heading {
   cursor:pointer
 }
 
+p.show-toggle {
+  margin-bottom: 0;
+}
+
 button.button.secondary {
   background: none;
   color: $govuk-blue;
   text-decoration: none;
   box-shadow: none;
   font-weight: bold;
-  padding: .8em 0 0 0;
+  padding: 5px 0 0 0;
   &.expand {
     font-size: 1.5em;
+    padding-top: 15px;
   }
 }
