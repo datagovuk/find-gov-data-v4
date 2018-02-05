@@ -1,10 +1,9 @@
 <!-- partial for rendering datalinks which are not grouped by date -->
 
-  <h2 class="heading-medium">Data</h2>
+  <h2 class="heading-medium">Data links</h2>
   <table>
     <tr>
       <th class="title">Link to the data</th>
-      <th>Time period</th>
       <th>Format</th>
       <th>Last updated</th>
       <th>Data preview</th>
@@ -26,7 +25,7 @@
         </td>
         <td>
           {% if datafile.format === 'CSV' %}
-            <a href="/preview-1/{{ result.name }}/{{ datafile.id }}">Preview</a>
+            <a href="/preview-1.html">Preview</a>
           {% elif datafile.format === 'HTML' %}
             <a href="{{ datafile.url }}">Go to site</a>
           {% else %}
@@ -40,4 +39,3 @@
   {% if (result.datafiles | length) > 5 %}
     <p class="show-toggle">Show more</a>
   {% endif %}
-  <br />
