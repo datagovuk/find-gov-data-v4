@@ -61,18 +61,25 @@ $path: "/public/images/";
   font-weight: bold;
 }
 
-.panel-beta {
-  // border: 5px solid #bfc1c3;
-  padding: 15px 20px;
-  margin-top: 25px;
+.beta-message {
   background: #005EA5;
-  color: #fff;
-  font-weight: bold;
-  a, a:hover, a:visited {
+  .panel-beta {
+    max-width: 960px;
+    margin: auto;
+    padding: 20px;
     color: #fff;
-    font-weight: normal;
+    font-weight: bold;
+    a, a:hover, a:visited {
+      color: #fff;
+      font-weight: normal;
+    }
+    p {
+      margin-bottom: 5px;
+    }
   }
 }
+
+
 
 .heading-xlarge {
   margin-top: 80px;
